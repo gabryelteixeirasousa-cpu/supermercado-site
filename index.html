@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Promoções de Supermercados</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #274472;
+            color: #fff;
+            padding: 25px 0;
+            text-align: center;
+        }
+        nav {
+            text-align: center;
+            background: #19335a;
+            padding: 15px 0;
+        }
+        nav button {
+            margin: 0 15px;
+            padding: 12px 30px;
+            font-size: 17px;
+            cursor: pointer;
+            background: #fff;
+            color: #274472;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.2s, color 0.2s;
+        }
+        nav button:hover, nav button.active {
+            background: #ffb400;
+            color: #19335a;
+        }
+        main {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 25px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+        }
+        h2 {
+            color: #274472;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .promocoes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 35px;
+            justify-content: center;
+        }
+        .produto {
+            width: 250px;
+            border-radius: 9px;
+            background: #f8f8f8;
+            box-shadow: 0 1.5px 10px rgba(0,0,0,0.09);
+            text-align: center;
+            padding: 18px 10px 25px 10px;
+            transition: transform .15s;
+        }
+        .produto:hover {
+            transform: scale(1.04);
+            box-shadow: 0 2.5px 18px rgba(0,0,0,0.13);
+        }
+        .produto img {
+            max-width: 115px;
+            border-radius: 6px;
+            margin-bottom: 14px;
+            background: #fff;
+        }
+        .produto_nome {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #19335a;
+        }
+        .produto_preco {
+            color: #ff7c15;
+            font-size: 21px;
+            font-weight: bold;
+        }
+        @media (max-width: 700px) {
+            main {padding: 7px;}
+            .promocoes {gap: 13px;}
+            .produto {width: 98%;}
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Promoções dos Supermercados</h1>
+        <p>Escolha o supermercado para ver as promoções do dia!</p>
+    </header>
+    <nav>
+        <button onclick="mostrarPromocoes('A')" id="btnA" class="active">Supermercado A</button>
+        <button onclick="mostrarPromocoes('B')" id="btnB">Supermercado B</button>
+        <button onclick="mostrarPromocoes('C')" id="btnC">Supermercado C</button>
+    </nav>
+    <main>
+        <h2 id="tituloMercado">Promoções - Supermercado A</h2>
+        <div class="promocoes" id="promocoesContainer">
+            <!-- Produtos aparecerão aqui -->
+        </div>
+    </main>
+    <script>
+        // Dados fictícios dos supermercados com imagens reais da web (direto de unsplash/pixabay/etc)
+        const dadosSupermercados = {
+            A: [
+                {
+                    nome: "Arroz Branco 5kg",
+                    preco: "R$ 18,99",
+                    img: "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=facearea&w=256&q=80"
+                },
+                {
+                    nome: "Óleo de Soja 900ml",
+                    preco: "R$ 6,89",
+                    img: "https://cdn.pixabay.com/photo/2016/04/13/20/11/oil-1327338_1280.jpg"
+                },
+                {
+                    nome: "Café Torrado 500g",
+                    preco: "R$ 12,49",
+                    img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=facearea&w=256&q=80"
+                }
+            ],
+            B: [
+                {
+                    nome: "Feijão Carioca 1kg",
+                    preco: "R$ 7,29",
+                    img: "https://cdn.pixabay.com/photo/2017/05/07/08/56/bean-2296751_1280.jpg"
+                },
+                {
+                    nome: "Leite Integral 1L",
+                    preco: "R$ 4,19",
+                    img: "https://images.unsplash.com/photo-1502741338009-cac2772e18bc?auto=format&fit=facearea&w=256&q=80"
+                },
+                {
+                    nome: "Biscoito Maisena 400g",
+                    preco: "R$ 3,49",
+                    img: "https://cdn.pixabay.com/photo/2014/10/28/18/41/cookie-507680_1280.jpg"
+                }
+            ],
+            C: [
+                {
+                    nome: "Detergente Neutro 500ml",
+                    preco: "R$ 2,15",
+                    img: "https://cdn.pixabay.com/photo/2016/09/26/14/45/cleaning-1691328_1280.jpg"
+                },
+                {
+                    nome: "Sabonete em Barra",
+                    preco: "R$ 1,99",
+                    img: "https://cdn.pixabay.com/photo/2016/11/23/18/29/soap-1859710_1280.jpg"
+                },
+                {
+                    nome: "Papel Higiênico 4un",
+                    preco: "R$ 6,79",
+                    img: "https://cdn.pixabay.com/photo/2017/02/12/21/29/toilet-paper-2061114_1280.jpg"
+                }
+            ]
+        };
+
+        // Função para mostrar as promoções do supermercado selecionado
+        function mostrarPromocoes(mercado) {
+            // Atualiza o título
+            const titulos = {A:"Supermercado A",B:"Supermercado B",C:"Supermercado C"};
+            document.getElementById('tituloMercado').textContent = "Promoções - " + titulos[mercado];
+
+            // Troca o botão ativo
+            document.getElementById('btnA').classList.remove('active');
+            document.getElementById('btnB').classList.remove('active');
+            document.getElementById('btnC').classList.remove('active');
+            document.getElementById('btn'+mercado).classList.add('active');
+
+            // Mostra as promoções
+            const container = document.getElementById('promocoesContainer');
+            container.innerHTML = '';
+            dadosSupermercados[mercado].forEach(produto => {
+                container.innerHTML += `
+                    <div class="produto">
+                        <img src="${produto.img}" alt="${produto.nome}">
+                        <div class="produto_nome">${produto.nome}</div>
+                        <div class="produto_preco">${produto.preco}</div>
+                    </div>
+                `;
+            });
+        }
+
+        // Mostrar o supermercado A ao iniciar
+        window.onload = () => {
+            mostrarPromocoes('A');
+        };
+    </script>
+</body>
+</html>
