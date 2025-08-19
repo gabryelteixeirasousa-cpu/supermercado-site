@@ -2,198 +2,819 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Promoções de Supermercados</title>
+    <title>Comparador de Supermercados</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts para visual profissional -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #2664e4;
+            --secondary: #fde76e;
+            --success: #51b020;
+            --danger: #e53441;
+            --warning: #ffae00;
+            --light: #f8fafc;
+            --dark: #23294a;
+            --card: #fff;
+            --oferta: #ff4d56;
+            --silver: #ececec;
+        }
+        * { box-sizing: border-box; }
         body {
-            font-family: Arial, sans-serif;
-            background: #f2f2f2;
             margin: 0;
-            padding: 0;
+            font-family: 'Roboto', Arial, Helvetica, sans-serif;
+            background: var(--light);
+            color: var(--dark);
         }
         header {
-            background: #274472;
+            background: var(--primary);
             color: #fff;
-            padding: 25px 0;
+            padding: 22px 10px 16px 10px;
             text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            letter-spacing: 0.5px;
         }
         nav {
-            text-align: center;
-            background: #19335a;
-            padding: 15px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin: 0;
+            background: var(--silver);
+            padding: 0 0 4px 0;
+            border-bottom: 3px solid var(--primary);
         }
         nav button {
-            margin: 0 15px;
-            padding: 12px 30px;
+            background: #fff;
+            border: 2px solid var(--primary);
+            border-radius: 30px;
+            padding: 8px 32px;
             font-size: 17px;
-            cursor: pointer;
-            background: #fff;
-            color: #274472;
-            border: none;
-            border-radius: 6px;
+            color: var(--primary);
             font-weight: bold;
-            transition: background 0.2s, color 0.2s;
+            cursor: pointer;
+            margin: 18px 0 7px 0;
+            transition: .15s;
+            box-shadow: 0 1.5px 6px #d2e0fa;
         }
-        nav button:hover, nav button.active {
-            background: #ffb400;
-            color: #19335a;
+        nav button.active, nav button:hover {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 2px 14px #b0d2fd;
         }
-        main {
-            max-width: 1100px;
-            margin: 35px auto;
-            padding: 25px;
+        .market-banner {
+            width: 100%;
+            max-width: 350px;
+            margin: 13px auto 6px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+        }
+        .market-banner img {
+            max-width: 94px; max-height: 70px;
+            border-radius: 9px;
             background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+            border: 1.5px solid var(--primary);
         }
-        h2 {
-            color: #274472;
-            text-align: center;
-            margin-bottom: 15px;
+        .market-banner .market-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            letter-spacing: 0.5px;
+            margin-left: 10px;
         }
-        .promocoes {
+        .products-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 35px;
+            gap: 23px;
             justify-content: center;
+            margin: 0 auto 29px auto;
+            max-width: 1200px;
         }
-        .produto {
-            width: 250px;
-            border-radius: 9px;
-            background: #f8f8f8;
-            box-shadow: 0 1.5px 10px rgba(0,0,0,0.09);
-            text-align: center;
-            padding: 18px 10px 25px 10px;
-            transition: transform .15s;
-        }
-        .produto:hover {
-            transform: scale(1.04);
-            box-shadow: 0 2.5px 18px rgba(0,0,0,0.13);
-        }
-        .produto img {
-            max-width: 115px;
-            border-radius: 6px;
+        .product {
+            background: var(--card);
+            border-radius: 13px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            width: 198px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 17px 11px 14px 11px;
+            position: relative;
             margin-bottom: 14px;
+            transition: box-shadow .2s, transform .17s;
+        }
+        .product:hover {
+            box-shadow: 0 5px 28px #cde4fc;
+            transform: scale(1.025);
+            z-index: 2;
+        }
+        .product img {
+            max-width: 94px; max-height: 86px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            background: #f4faff;
+        }
+        .product-title {
+            font-weight: bold;
+            font-size: 1.0em;
+            color: var(--dark);
+            margin-bottom: 6px;
+            text-align: center;
+            min-height: 38px;
+        }
+        .product-price {
+            color: var(--success);
+            font-size: 1.17em;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+        .product-category {
+            font-size: 0.92em;
+            color: #6a7296;
+            margin-bottom: 6px;
+            min-height:18px;
+        }
+        .oferta-badge {
+            position: absolute;
+            top: 7px; left: 8px;
+            background: var(--oferta);
+            color: #fff;
+            padding: 2px 11px 2px 11px;
+            border-radius: 19px;
+            font-size: .91em;
+            font-weight: bold;
+            box-shadow: 0 1px 8px #ffcbd1;
+            text-shadow: 0px 1px 4px #e23c5a81;
+            letter-spacing: 1px;
+        }
+        .sem-estoque {
+            filter: grayscale(0.8);
+            opacity: 0.63;
+            pointer-events: none;
+        }
+        .sem-estoque::after {
+            content: "Sem estoque";
+            position: absolute;
+            top: 54%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.1em;
+            color: #fff;
+            background: var(--danger);
+            padding: 5px 14px;
+            border-radius: 9px;
+            box-shadow: 0 2px 8px #f6bfc4;
+            font-weight: bold;
+        }
+        .add-cart {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 7px 24px;
+            border-radius: 28px;
+            font-weight: 600;
+            margin-top: 7px;
+            font-size: 1em;
+            cursor: pointer;
+            box-shadow: 0 1.4px 5px #c5d9f5;
+            transition: background .14s;
+        }
+        .add-cart:hover {
+            background: var(--success);
+            box-shadow: 0 2.5px 14px #b8dfb4;
+        }
+        /* Carrinho Flutuante */
+        .cart-fab {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            background: var(--primary);
+            color: #fff;
+            width: 62px; height: 62px;
+            border-radius: 56%;
+            box-shadow: 0 3px 28px #b0cffb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.6em;
+            z-index: 1100;
+            border: 4px solid #fff;
+            cursor: pointer;
+            transition: background .18s, box-shadow .24s;
+        }
+        .cart-fab:hover { background: var(--success); }
+        .cart-count {
+            position: absolute;
+            top: 5px; right: 9px;
+            background: var(--danger);
+            color: #fff;
+            font-size: 1em;
+            border-radius:50%;
+            width: 25px; height: 25px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 2px 8px #f6bfc4;
+            border:1.5px solid #fff;
+        }
+        /* Carrinho lateral/flutuante */
+        .cart-modal-bg {
+            display: none;
+            position:fixed; z-index:1200;
+            left:0; top:0;width:100vw;height:100vh;
+            background:rgba(70,90,150,0.22);
+        }
+        .cart-modal {
+            display: none;
+            position: fixed;
+            right: 0; top: 0;
+            height: 100vh;
+            width: 410px;
+            max-width: 95vw;
+            background: var(--card);
+            box-shadow: -6px 0 32px #b6cef7;
+            z-index: 1201;
+            padding: 0 0 33px 0;
+            overflow-y:auto;
+            animation: entradaCart 0.15s ease;
+        }
+        @keyframes entradaCart {
+            from{ transform: translateX(180px); opacity:0; }
+            to { transform: translateX(0); opacity:1;}
+        }
+        .cart-header {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--primary);
+            color: #fff; padding: 15px 22px 13px 22px;
+            font-size: 1.15em;
+        }
+        .cart-header button {
+            background: none; color: #fff;
+            border: none; font-size: 1.45em;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .cart-items {
+            padding: 14px 19px 10px 17px;
+        }
+        .cart-item {
+            display: flex; align-items: center;
+            margin-bottom: 13px;
+            border-bottom: 1.5px solid #f0f4fc;
+            padding-bottom: 7px;
+        }
+        .cart-item img {
+            max-width: 44px; max-height: 45px; margin-right: 11px; border-radius: 4px; background: #fcfcfc;
+        }
+        .cart-item-details { flex-grow: 1; }
+        .cart-item-title { font-size: 0.96em; font-weight: bold; margin-bottom: 2px; }
+        .cart-item-market { font-size: 0.88em; color: #8ca7d5; margin-bottom: 2px;}
+        .cart-item-price { color: var(--primary); font-weight: 600; font-size: 1em; }
+        .cart-quantity {
+            display: flex; align-items: center; margin-top: 5px;
+        }
+        .cart-quantity input {
+            width: 36px; height: 28px; margin: 0 2px;
+            font-size: 1.07em; text-align: center;
+            border: 1.5px solid var(--silver);
+            border-radius: 5px;
+        }
+        .cart-quantity button {
+            background: var(--primary); color: #fff; border: none;
+            width: 23px; height: 23px; font-weight: bold; font-size: 1.18em;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 0 2px;
+        }
+        .cart-remove {
+            background: var(--danger);
+            color: #fff;
+            border: none;
+            border-radius: 7px;
+            font-size: 1.0em;
+            padding: 5px 8px;
+            cursor: pointer;
+            margin-left: 7px;
+            box-shadow: 0 1px 4px #ffe0e2;
+            transition: background 0.14s;
+        }
+        .cart-remove:hover { background: #a91f2f; }
+        .cart-footer {
+            padding: 15px 18px 5px 18px;
+            border-top: 2px solid #f0f4fc;
+        }
+        .cart-finalizar {
+            background: var(--success);
+            color: #fff;
+            border: none;
+            border-radius: 26px;
+            padding: 13px 18px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 16px;
+            box-shadow: 0 1.5px 11px #cdebbf;
+            width: 100%;
+            transition: background .13s;
+        }
+        .cart-finalizar:hover { background: var(--primary);}
+        .cart-limpar {
+            background: var(--warning); color: #fff;
+            border:none; border-radius: 13px; padding: 7px 16px;
+            cursor: pointer; font-size: 0.96em; font-weight: 600;
+            float:right; margin-top:8px;
+        }
+        .cart-info { font-size: 0.92em; margin-top: 10px; color: #777;}
+        /* Modal de comparação */
+        .compare-modal-bg {
+            display: none;
+            position:fixed; z-index:1500;
+            left:0; top:0;width:100vw;height:100vh;
+            background:rgba(50,80,128,0.16);
+        }
+        .compare-modal {
+            display: none;
+            position: fixed;
+            left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
             background: #fff;
+            padding: 28px 16px 20px 16px;
+            max-width: 540px;
+            width: 96vw;
+            border-radius: 17px;
+            box-shadow: 0 8px 42px #b9d6fc;
+            z-index: 1501;
         }
-        .produto_nome {
+        .compare-title {
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.5em;
+            color: var(--primary);
+            margin-bottom: 18px;
+            letter-spacing:1px;
+        }
+        .compare-table { width: 100%; border-collapse: collapse; }
+        .compare-table th, .compare-table td {
+            padding: 10px 11px;
+            text-align: center;
+            font-size: 1.06em;
+        }
+        .compare-table th {background: var(--primary);color:#fff;}
+        .compare-best { background: var(--success); color: #fff!Important; font-weight: bold;}
+        .compare-mid { background: var(--warning); color: #fff; font-weight:bold;}
+        .compare-worst { background: var(--danger); color: #fff; font-weight: bold;}
+        .compare-table img {max-width:32px;vertical-align:middle;margin-right:6px;}
+        .compare-totals {margin-top:15px; text-align:center;}
+        .compare-restart {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 19px;
+            padding: 8px 19px;
+            font-size: 16px;
             font-weight: bold;
-            margin-bottom: 8px;
-            color: #19335a;
+            cursor: pointer;
+            margin-top: 18px;
+            box-shadow: 0 2px 18px #e7eefd;
+            transition: background .12s;
         }
-        .produto_preco {
-            color: #ff7c15;
-            font-size: 21px;
-            font-weight: bold;
+        .compare-restart:hover { background: var(--success);}
+        .compare-close {
+            position:absolute; right:13px; top:14px;
+            background:none; border:none; color:var(--danger);
+            font-weight: bold; font-size:1.54em; cursor:pointer;
         }
-        @media (max-width: 700px) {
-            main {padding: 7px;}
-            .promocoes {gap: 13px;}
-            .produto {width: 98%;}
+        /* Toastr */
+        #toast {
+            visibility:hidden; min-width:280px;
+            margin-left:-120px;position:fixed;z-index:3000;left:50%;top:28px;
+            background: var(--primary); color: #fff; font-weight:600;
+            text-align:center;border-radius:8px;padding:12px; font-size:1.16em;
+            box-shadow:0 .7px 8px #c3dcff;
+        }
+        #toast.success {background: var(--success);}
+        #toast.info {background: var(--primary);}
+        #toast.error {background: var(--danger);}
+        @media (max-width:925px) {
+            .products-list { gap: 12px;}
+            .product {width: 49%;}
+            .cart-modal {width:98vw;}
+        }
+        @media (max-width:540px) {
+            .market-banner {flex-direction:column;}
+            .product { width: 97vw; max-width: 370px; margin-bottom:11px;}
+            .products-list { gap: 6px;}
+            .cart-modal { width:99vw; padding: 0 0 28px 0; top:0;}
+            .compare-modal {max-width:99vw;}
+            .cart-header {font-size:1em;}
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Promoções dos Supermercados</h1>
-        <p>Escolha o supermercado para ver as promoções do dia!</p>
+        <h1>Comparador de Supermercados</h1>
+        <p style="font-size:1.01em;margin-top:7px;opacity:0.92;">Selecione seus produtos favoritos, monte seu carrinho e veja onde é mais vantajoso comprar! 🎉</p>
     </header>
+    <!-- Navegação dos supermercados -->
     <nav>
-        <button onclick="mostrarPromocoes('A')" id="btnA" class="active">Supermercado A</button>
-        <button onclick="mostrarPromocoes('B')" id="btnB">Supermercado B</button>
-        <button onclick="mostrarPromocoes('C')" id="btnC">Supermercado C</button>
+        <button class="active" onclick="selecionaMercado('bh', this)">Supermercados BH</button>
+        <button onclick="selecionaMercado('duvale', this)">Duvale</button>
+        <button onclick="selecionaMercado('cd', this)">Coelho Diniz</button>
     </nav>
-    <main>
-        <h2 id="tituloMercado">Promoções - Supermercado A</h2>
-        <div class="promocoes" id="promocoesContainer">
-            <!-- Produtos aparecerão aqui -->
+    <!-- Banner/logos dos mercados -->
+    <div id="banner-mercado"></div>
+    <!-- Lista de produtos -->
+    <div class="products-list" id="products-container"></div>
+    <!-- Botão do carrinho flutuante -->
+    <div class="cart-fab" id="cartFab" onclick="abreCarrinho()">
+        <svg height="28" width="28" viewBox="0 0 24 24" fill="none" style="margin-top:4px;">
+        <path d="M7.99 18a2 2 0 1 0 0 4 2 2 0 1 0 0-4zm7 2a2 2 0 1 0 4 0 2 2 0 1 0-4 0zM7.16 16h10.58a4 4 0 0 0 3.92-3.03l1.3-5.19A2 2 0 0 0 21.05 5H6.21l-.35-1.4A2 2 0 0 0 4 2H2v2h2l3.6 14.4c.2.8 1 1.6 1.99 1.6h10.58v-2z" fill="#fff"/></svg>
+        <span class="cart-count" id="cart-count" style="display:none;">0</span>
+    </div>
+    <!-- Modal do carrinho -->
+    <div class="cart-modal-bg" id="cartModalBg" onclick="fechaCarrinho()"></div>
+    <aside class="cart-modal" id="cartModal">
+        <div class="cart-header">
+            <span>Seu Carrinho</span>
+            <button onclick="fechaCarrinho()">&times;</button>
         </div>
-    </main>
-    <script>
-        // Dados fictícios dos supermercados com imagens reais da web (direto de unsplash/pixabay/etc)
-        const dadosSupermercados = {
-            A: [
-                {
-                    nome: "Arroz Branco 5kg",
-                    preco: "R$ 18,99",
-                    img: "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=facearea&w=256&q=80"
-                },
-                {
-                    nome: "Óleo de Soja 900ml",
-                    preco: "R$ 6,89",
-                    img: "https://cdn.pixabay.com/photo/2016/04/13/20/11/oil-1327338_1280.jpg"
-                },
-                {
-                    nome: "Café Torrado 500g",
-                    preco: "R$ 12,49",
-                    img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=facearea&w=256&q=80"
-                }
-            ],
-            B: [
-                {
-                    nome: "Feijão Carioca 1kg",
-                    preco: "R$ 7,29",
-                    img: "https://cdn.pixabay.com/photo/2017/05/07/08/56/bean-2296751_1280.jpg"
-                },
-                {
-                    nome: "Leite Integral 1L",
-                    preco: "R$ 4,19",
-                    img: "https://images.unsplash.com/photo-1502741338009-cac2772e18bc?auto=format&fit=facearea&w=256&q=80"
-                },
-                {
-                    nome: "Biscoito Maisena 400g",
-                    preco: "R$ 3,49",
-                    img: "https://cdn.pixabay.com/photo/2014/10/28/18/41/cookie-507680_1280.jpg"
-                }
-            ],
-            C: [
-                {
-                    nome: "Detergente Neutro 500ml",
-                    preco: "R$ 2,15",
-                    img: "https://cdn.pixabay.com/photo/2016/09/26/14/45/cleaning-1691328_1280.jpg"
-                },
-                {
-                    nome: "Sabonete em Barra",
-                    preco: "R$ 1,99",
-                    img: "https://cdn.pixabay.com/photo/2016/11/23/18/29/soap-1859710_1280.jpg"
-                },
-                {
-                    nome: "Papel Higiênico 4un",
-                    preco: "R$ 6,79",
-                    img: "https://cdn.pixabay.com/photo/2017/02/12/21/29/toilet-paper-2061114_1280.jpg"
-                }
-            ]
-        };
+        <div class="cart-items" id="cartItemsContainer"></div>
+        <div class="cart-footer">
+            <button class="cart-finalizar" onclick="finalizarCompra()">Comparar nos 3 supermercados</button>
+            <button class="cart-limpar" onclick="limparCarrinho()">Limpar carrinho</button>
+            <div class="cart-info" id="cartSubtotal"></div>
+        </div>
+    </aside>
+    <!-- Modal de comparação -->
+    <div class="compare-modal-bg" id="compareModalBg" onclick="fechaComparacao()"></div>
+    <div class="compare-modal" id="compareModal">
+        <button class="compare-close" onclick="fechaComparacao()">&times;</button>
+        <div class="compare-title">Comparativo de Preço do Carrinho</div>
+        <div id="compareTableContainer"></div>
+        <div class="compare-totals" id="compareTotals"></div>
+        <button class="compare-restart" onclick="recomecarCompra()">Fazer nova comparação</button>
+    </div>
+    <!-- Toast para avisos -->
+    <div id="toast"></div>
 
-        // Função para mostrar as promoções do supermercado selecionado
-        function mostrarPromocoes(mercado) {
-            // Atualiza o título
-            const titulos = {A:"Supermercado A",B:"Supermercado B",C:"Supermercado C"};
-            document.getElementById('tituloMercado').textContent = "Promoções - " + titulos[mercado];
+<script>
+/** BANNERS E LOGOS */
+const SUPERMARKETS = {
+    bh: {
+        nome: 'Supermercados BH',
+        banner: 'https://yt3.googleusercontent.com/vgeMfc02YxL3_P8TbkXwQ6m8ap93sHPLJvN1Hs8Hp5swDRF_PuYaI_rnJE16HOp7h013hCKm=s900-c-k-c0x00ffffff-no-rj',
+        logo:  'https://yt3.googleusercontent.com/vgeMfc02YxL3_P8TbkXwQ6m8ap93sHPLJvN1Hs8Hp5swDRF_PuYaI_rnJE16HOp7h013hCKm=s900-c-k-c0x00ffffff-no-rj'
+    },
+    duvale: {
+        nome: 'Supermercado Duvale',
+        banner: 'https://www.duvale.com.br/img/duvale-news-logo.png',
+        logo: 'https://www.duvale.com.br/images/duvale-png.png'
+    },
+    cd: {
+        nome: 'Coelho Diniz',
+        banner: 'https://media.glassdoor.com/sqll/2560397/supermercados-coelho-diniz-squarelogo-1568642614016.png',
+        logo: 'https://media.glassdoor.com/sqll/2560397/supermercados-coelho-diniz-squarelogo-1568642614016.png'
+    }
+};
 
-            // Troca o botão ativo
-            document.getElementById('btnA').classList.remove('active');
-            document.getElementById('btnB').classList.remove('active');
-            document.getElementById('btnC').classList.remove('active');
-            document.getElementById('btn'+mercado).classList.add('active');
+/** PRODUTOS (Baseados em produtos reais de mercado) */
+const produtos = {
+    bh: [
+        // 20 produtos, com exemplos variados (preços misturados, badges de oferta em alguns)
+        { id:1, nome:"Arroz Camil 5kg", categoria:"Alimentos", preco:22.89, img:"https://a-static.mlcdn.com.br/800x560/arroz-camil-5kg-arroz-camil-principal/camil/893aad3d4ef611eba19c42010a246012/bfc7e7937262d984e34fdcaf73d62b62.jpeg", oferta:true },
+        { id:2, nome:"Feijão Carioca Caldo Bom 1kg", categoria:"Alimentos", preco:9.59, img:"https://static.paodeacucar.com/img/uploads/1/681/456681.png", oferta:false },
+        { id:3, nome:"Óleo de Soja Soya 900ml", categoria:"Alimentos", preco:7.95, img:"https://www.soya.com.br/assets/img/og/oleosoya-900ml.png", oferta:false },
+        { id:4, nome:"Açúcar União Refinado 1kg", categoria:"Alimentos", preco:4.69, img:"https://www.drogarianet.com.br/media/product/57c/açucar-uniao-1kg-660.jpg", oferta:true },
+        { id:5, nome:"Macarrão Espaguete Renata 500g", categoria:"Alimentos", preco:3.49, img:"https://superprix.vteximg.com.br/arquivos/ids/163947-1000-1000/2025144.jpg?v=636957775872030000", oferta:true },
+        { id:6, nome:"Café Santa Clara 250g", categoria:"Bebidas", preco:9.99, img:"https://static.paodeacucar.com/img/uploads/1/856/458856.png", oferta:false },
+        { id:7, nome:"Leite Italac Integral 1L", categoria:"Bebidas", preco:4.69, img:"https://www.italac.com.br/uploads/produtos/leite-integral-1l.png", oferta:false },
+        { id:8, nome:"Refrigerante Coca-Cola 2L", categoria:"Bebidas", preco:8.99, img:"https://www.coca-cola.com.br/content/dam/one/brands/coke/br/products/coca-cola-original-lata-350ml.png", oferta:true },
+        { id:9, nome:"Molho de Tomate Tarantella 340g", categoria:"Alimentos", preco:2.25, img:"https://superprix.vteximg.com.br/arquivos/ids/177285-1000-1000/2029527.jpg?v=636957832952900000", oferta:false },
+        { id:10, nome:"Farinha de Trigo Dona Benta 1kg", categoria:"Alimentos", preco:4.29, img:"https://images.tcdn.com.br/img/img_prod/607087/farinha_de_trigo_dona_benta_1kg_427_1_20181206122041.jpg", oferta:true },
+        { id:11, nome:"Detergente Ypê Neutro 500ml", categoria:"Limpeza", preco:2.69, img:"https://static.paodeacucar.com/img/uploads/1/634/116534.png", oferta:false },
+        { id:12, nome:"Sabão em Pó Omo Lavagem Perfeita 800g", categoria:"Limpeza", preco:10.49, img:"https://static.paodeacucar.com/img/uploads/1/390/370390.png", oferta:true },
+        { id:13, nome:"Desinfetante Lysoform 500ml", categoria:"Limpeza", preco:5.39, img:"https://static.paodeacucar.com/img/uploads/1/985/359985.png", oferta:false },
+        { id:14, nome:"Amaciante Comfort 500ml", categoria:"Limpeza", preco:7.89, img:"https://superprix.vteximg.com.br/arquivos/ids/164342-1000-1000/2031633.jpg", oferta:false },
+        { id:15, nome:"Papel Higiênico Neve 12x30m", categoria:"Limpeza", preco:20.79, img:"https://superprix.vteximg.com.br/arquivos/ids/166393-1000-1000/2035143.jpg", oferta:true },
+        { id:16, nome:"Biscoito Trakinas 126g", categoria:"Alimentos", preco:2.49, img:"https://io.convertiez.com.br/m/drogariaminasbrasil/shop/products/images/5649/medium/biscoito-trakinas-126g_6732.jpg", oferta:false },
+        { id:17, nome:"Achocolatado Nescau 400g", categoria:"Alimentos", preco:6.99, img:"https://www.nestle.com.br/images/nescau-400g.png", oferta:false },
+        { id:18, nome:"Salsicha Sadia 1kg", categoria:"Alimentos", preco:13.49, img:"https://superprix.vteximg.com.br/arquivos/ids/172587-1000-1000/2029354.jpg", oferta:true },
+        { id:19, nome:"Frango Congelado Sadia 1kg", categoria:"Carnes", preco:13.99, img:"https://superprix.vteximg.com.br/arquivos/ids/176679-1000-1000/2042318.jpg", oferta:false },
+        { id:20, nome:"Linguiça Toscana Seara 1kg", categoria:"Carnes", preco:15.79, img:"https://superprix.vteximg.com.br/arquivos/ids/175505-1000-1000/2044288.jpg?v=636961409235300000", oferta:false, estoque:0 }
+    ],
+    // DUVALE
+    duvale: [
+        { id:1, nome:"Arroz Tio João 5kg", categoria:"Alimentos", preco:21.99, img:"https://static.paodeacucar.com/img/uploads/1/51/254051.jpg", oferta:true },
+        { id:2, nome:"Feijão Kicaldo 1kg", categoria:"Alimentos", preco:8.99, img:"https://cdn.awsli.com.br/300x300/2261/2261934/produto/201222315/feijao-carioca-kicaldo-1kg-2562097a4e4bc306aa.jpg", oferta:true },
+        { id:3, nome:"Óleo Liza 900ml", categoria:"Alimentos", preco:8.35, img:"https://savegnagoio.vteximg.com.br/arquivos/ids/184351-1000-1000/2027311.jpg", oferta:false },
+        { id:4, nome:"Açúcar Cristal Caravelas 1kg", categoria:"Alimentos", preco:4.39, img:"https://cdn.awsli.com.br/600x450/1235/1235493/produto/32286182/96dbd427a0.jpg", oferta:false },
+        { id:5, nome:"Macarrão Parafuso Renata 500g", categoria:"Alimentos", preco:3.79, img:"https://images.tcdn.com.br/img/img_prod/609693/macarrao_renata_parafuso_500g_446_1_20201006145201.jpg", oferta:true },
+        { id:6, nome:"Café 3 Corações 250g", categoria:"Bebidas", preco:10.79, img:"https://a-static.mlcdn.com.br/800x560/cafe-tres-coracoes-almofada-250g/magazineluiza/220066100/d70eab901ebb8ba99a1adcdebc5ae2b2.jpg", oferta:false },
+        { id:7, nome:"Leite Piracanjuba Integral 1L", categoria:"Bebidas", preco:4.95, img:"https://www.piracanjuba.com.br/uploads/images/leite-integral-1l.png", oferta:false },
+        { id:8, nome:"Refrigerante Pepsi 2L", categoria:"Bebidas", preco:7.99, img:"https://io.convertiez.com.br/m/drogariaminasbrasil/shop/products/images/25830/medium/refrigerante-pepsi-2l_59684.jpg", oferta:true },
+        { id:9, nome:"Molho de Tomate Predilecta 340g", categoria:"Alimentos", preco:2.19, img:"https://static.paodeacucar.com/img/uploads/1/912/293912.jpg", oferta:false },
+        { id:10, nome:"Farinha de Trigo Sol 1kg", categoria:"Alimentos", preco:4.09, img:"https://a-static.mlcdn.com.br/800x560/farinha-de-trigo-sol-tradicional-1kg/hiperideal/143415/5946ec029e9bcc9437bca4e84e3777c6.jpg", oferta:false },
+        { id:11, nome:"Detergente Limpol Neutro 500ml", categoria:"Limpeza", preco:2.49, img:"https://static.paodeacucar.com/img/uploads/1/139/368139.png", oferta:true },
+        { id:12, nome:"Sabão em Pó Surf Rosas 800g", categoria:"Limpeza", preco:8.99, img:"https://images.tcdn.com.br/img/img_prod/697673/sabao_em_po_surf_rosas_800g_963_1_20201217175003.jpg", oferta:false },
+        { id:13, nome:"Desinfetante Pinho Sol 500ml", categoria:"Limpeza", preco:5.15, img:"https://static.paodeacucar.com/img/uploads/1/657/273657.png", oferta:true },
+        { id:14, nome:"Amaciante Fofo 500ml", categoria:"Limpeza", preco:8.25, img:"https://static.paodeacucar.com/img/uploads/1/621/426621.jpg", oferta:false },
+        { id:15, nome:"Papel Higiênico Personal Vip 16x30m", categoria:"Limpeza", preco:24.49, img:"https://static.paodeacucar.com/img/uploads/1/454/363454.jpg", oferta:true },
+        { id:16, nome:"Biscoito Bono Chocolate 126g", categoria:"Alimentos", preco:2.69, img:"https://io.convertiez.com.br/m/drogariaminasbrasil/shop/products/images/5447/medium/biscoito-bono-chocolate-126g_6519.jpg", oferta:true },
+        { id:17, nome:"Achocolatado Toddy 400g", categoria:"Alimentos", preco:7.65, img:"https://io.convertiez.com.br/m/drogariaminasbrasil/shop/products/images/13501/medium/achocolatado-toddy-400g_91193.jpg", oferta:true },
+        { id:18, nome:"Mortadela Seara 1kg", categoria:"Frios", preco:12.99, img:"https://superprix.vteximg.com.br/arquivos/ids/168985-1000-1000/2030834.jpg?v=636957792272630000", oferta:false },
+        { id:19, nome:"Frango Resfriado Sadia 1kg", categoria:"Carnes", preco:14.39, img:"https://io.convertiez.com.br/m/drogariaminasbrasil/shop/products/images/13725/medium/frango-congelado-sadia-1kg_93907.jpg", oferta:true },
+        { id:20, nome:"Linguiça Perdigão Toscana 1kg", categoria:"Carnes", preco:17.19, img:"https://io.convertiez.com.br/m/drogariaminasbrasil/shop/products/images/13464/medium/linguica-toscana-perdigao-1kg_90516.jpg", oferta:false }
+    ],
+    // COELHO DINIZ
+    cd: [
+        { id:1, nome:"Arroz Vasconcelos 5kg", categoria:"Alimentos", preco:22.49, img:"https://mercadoorganico.com/loja/image/cache/data/cereal/Arroz%20Integral%20Organico%20Vasconcelos%205kg%201-800x800.jpg", oferta:false },
+        { id:2, nome:"Feijão Ouro Premium 1kg", categoria:"Alimentos", preco:7.79, img:"https://io.convertiez.com.br/m/drogariaminasbrasil/shop/products/images/13670/medium/feijao-ouro-premium-1kg_92407.jpg", oferta:true },
+        { id:3, nome:"Óleo Soya 900ml", categoria:"Alimentos", preco:8.25, img:"https://www.soya.com.br/assets/img/og/oleosoya-900ml.png", oferta:false },
+        { id:4, nome:"Açúcar União Demerara 1kg", categoria:"Alimentos", preco:5.19, img:"https://static.paodeacucar.com/img/uploads/1/771/417771.png", oferta:true },
+        { id:5, nome:"Macarrão Fortaleza Espaguete 500g", categoria:"Alimentos", preco:3.59, img:"https://static.paodeacucar.com/img/uploads/1/667/436667.png", oferta:true },
+        { id:6, nome:"Café Pilão 250g", categoria:"Bebidas", preco:10.29, img:"https://io.convertiez.com.br/m/drogariaminasbrasil/shop/products/images/18739/medium/cafe-pilao-250g_124735.jpg", oferta:false },
+        { id:7, nome:"Leite Canto de Minas Integral 1L", categoria:"Bebidas", preco:5.29, img:"https://static.paodeacucar.com/img/uploads/1/93/252593.jpg", oferta:false },
+        { id:8, nome:"Refrigerante Guaraná Antártica 2L", categoria:"Bebidas", preco:8.69, img:"https://static.paodeacucar.com/img/uploads/1/630/116630.jpg", oferta:true },
+        { id:9, nome:"Molho de Tomate Heinz 340g", categoria:"Alimentos", preco:3.19, img:"https://io.convertiez.com.br/m/drogariaminasbrasil/shop/products/images/6751/medium/molho-de-tomate-heinz-tradicional-340g_7796.jpg", oferta:false },
+        { id:10, nome:"Farinha de Trigo Dona Benta 1kg", categoria:"Alimentos", preco:4.39, img:"https://images.tcdn.com.br/img/img_prod/607087/farinha_de_trigo_dona_benta_1kg_427_1_20181206122041.jpg", oferta:true },
+        { id:11, nome:"Detergente Ypê Neutro 500ml", categoria:"Limpeza", preco:2.39, img:"https://static.paodeacucar.com/img/uploads/1/634/116534.png", oferta:true },
+        { id:12, nome:"Sabão em Pó Brilhante 1kg", categoria:"Limpeza", preco:8.69, img:"https://static.paodeacucar.com/img/uploads/1/198/371198.png", oferta:false },
+        { id:13, nome:"Desinfetante Veja 500ml", categoria:"Limpeza", preco:4.99, img:"https://static.paodeacucar.com/img/uploads/1/88/165088.jpg", oferta:true },
+        { id:14, nome:"Amaciante Urca 500ml", categoria:"Limpeza", preco:7.49, img:"https://images.tcdn.com.br/img/img_prod/697673/amaciante_urca_cheirinho_de_quintal_2l_4641_1_20201219163157.jpg", oferta:false },
+        { id:15, nome:"Papel Higiênico Paloma 12x30m", categoria:"Limpeza", preco:17.49, img:"https://superprix.vteximg.com.br/arquivos/ids/163102-1000-1000/2021099.jpg?v=636957743044590000", oferta:true },
+        { id:16, nome:"Biscoito Cream Cracker Marilan 200g", categoria:"Alimentos", preco:3.29, img:"https://io.convertiez.com.br/m/drogariaminasbrasil/shop/products/images/5823/medium/biscoito-cream-cracker-marilan-200g_7941.jpg", oferta:false },
+        { id:17, nome:"Achocolatado Nescau 400g", categoria:"Alimentos", preco:7.29, img:"https://www.nestle.com.br/images/nescau-400g.png", oferta:false },
+        { id:18, nome:"Presunto Seara 1kg", categoria:"Frios", preco:17.49, img:"https://static.paodeacucar.com/img/uploads/1/161/204161.png", oferta:true },
+        { id:19, nome:"Frango Congelado Sadia 1kg", categoria:"Carnes", preco:14.69, img:"https://superprix.vteximg.com.br/arquivos/ids/176679-1000-1000/2042318.jpg", oferta:false, estoque:0 },
+        { id:20, nome:"Linguiça Calabresa Seara 1kg", categoria:"Carnes", preco:16.69, img:"https://static.paodeacucar.com/img/uploads/1/825/551825.png", oferta:false }
+    ]
+};
 
-            // Mostra as promoções
-            const container = document.getElementById('promocoesContainer');
-            container.innerHTML = '';
-            dadosSupermercados[mercado].forEach(produto => {
-                container.innerHTML += `
-                    <div class="produto">
-                        <img src="${produto.img}" alt="${produto.nome}">
-                        <div class="produto_nome">${produto.nome}</div>
-                        <div class="produto_preco">${produto.preco}</div>
+/* Banner de supermercado na tela */
+function selecionaMercado(marketId, btn) {
+    // Ativa botão
+    document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    // Troca banner/logo
+    const banner = SUPERMARKETS[marketId];
+    document.getElementById("banner-mercado").innerHTML = `
+    <div class="market-banner">
+        <img src="${banner.logo}" alt="${banner.nome} Logo">
+        <span class="market-title">${banner.nome}</span>
+    </div>
+    `;
+    // Lista produtos desse mercado
+    listaProdutos(marketId);
+    // Salva seleção para próxima visita
+    localStorage.setItem("marketSel", marketId);
+}
+
+/** Lista os produtos na página */
+function listaProdutos(marketId) {
+    const products = produtos[marketId];
+    let html = '';
+    for (const prod of products) {
+        let itemClasse = prod.estoque === 0 ? "product sem-estoque" : "product";
+        html += `
+        <div class="${itemClasse}">
+            ${prod.oferta ? `<div class="oferta-badge">OFERTA!</div>` : ""}
+            <img src="${prod.img}" alt="${prod.nome}">
+            <div class="product-title">${prod.nome}</div>
+            <div class="product-category">${prod.categoria ? prod.categoria : ""}</div>
+            <div class="product-price">R$ ${prod.preco.toFixed(2)}</div>
+            ${prod.estoque === 0 ?
+                `<div style="height:28px"></div>` :
+                `<button class="add-cart" onclick="adicionarCarrinho('${marketId}', ${prod.id})">Adicionar</button>`
+            }
+        </div>
+        `;
+    }
+    document.getElementById("products-container").innerHTML = html;
+}
+
+/** === Carrinho de compras === **/
+let carrinho = [];
+// carrinho = [{market:'bh', id:1, nome:'', preco:XX, img:'', quantidade:1}, ...]
+// Salva no localStorage sempre
+
+function salvarCarrinho() {
+    localStorage.setItem('cartCompare', JSON.stringify(carrinho));
+}
+
+function carregarCarrinho() {
+    let c = localStorage.getItem('cartCompare');
+    carrinho = c ? JSON.parse(c) : [];
+    atualizaFab();
+}
+function atualizaFab() {
+    const fab = document.getElementById("cartFab");
+    const count = carrinho.reduce((a,b) => a + Number(b.quantidade), 0);
+    document.getElementById("cart-count").style.display = count > 0 ? 'flex':'none';
+    document.getElementById("cart-count").textContent = count;
+}
+function adicionarCarrinho(marketId, prodId) {
+    const prod = produtos[marketId].find(p => p.id === prodId);
+    if (!prod) return;
+    const idx = carrinho.findIndex(c => c.market===marketId && c.id===prodId);
+    if (idx > -1) {
+        carrinho[idx].quantidade++;
+    } else {
+        carrinho.push({
+            market:marketId, id:prod.id, nome:prod.nome, preco:prod.preco, img:prod.img, categoria:prod.categoria, quantidade:1
+        });
+    }
+    salvarCarrinho();
+    atualizaFab();
+    showToast("Produto adicionado ao carrinho!", "success");
+}
+function abreCarrinho() {
+    document.getElementById("cartModalBg").style.display='block';
+    document.getElementById("cartModal").style.display='block';
+    listaCarrinho();
+}
+function fechaCarrinho() {
+    document.getElementById("cartModalBg").style.display='none';
+    document.getElementById("cartModal").style.display='none';
+}
+
+function listaCarrinho() {
+    let html = '';
+    let subtotal = 0;
+    if (carrinho.length==0) {
+        html = `<div style="text-align:center;opacity:.74;font-size:1.13em;">Seu carrinho está vazio.<br><br>
+            <img src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png" width="70" style="opacity:.28;margin-top:16px;">
+        </div>`;
+    } else {
+        for (const item of carrinho) {
+            subtotal += (item.preco * item.quantidade);
+            html += `
+            <div class="cart-item">
+                <img src="${item.img}" alt="${item.nome}">
+                <div class="cart-item-details">
+                    <div class="cart-item-title">${item.nome}</div>
+                    <div class="cart-item-market">${SUPERMARKETS[item.market].nome}</div>
+                    <div class="cart-item-price">R$ ${(item.preco*item.quantidade).toFixed(2)}</div>
+                    <div class="cart-quantity">
+                        <button onclick="alteraQtd('${item.market}',${item.id},-1)">-</button>
+                        <input type="number" min="1" value="${item.quantidade}" onchange="defineQtd('${item.market}',${item.id},this.value)">
+                        <button onclick="alteraQtd('${item.market}',${item.id},1)">+</button>
+                        <button class="cart-remove" onclick="removerItem('${item.market}',${item.id})" title="Remover do carrinho">&times;</button>
                     </div>
-                `;
-            });
+                </div>
+            </div>
+            `;
         }
+    }
+    document.getElementById("cartItemsContainer").innerHTML = html;
+    document.getElementById("cartSubtotal").innerHTML = 
+        (carrinho.length > 0) ? `<b>Total do Carrinho:</b> R$ ${subtotal.toFixed(2)}` : '';
+    atualizaFab();
+}
+function alterarQtd(market,id,delta) {
+    const idx = carrinho.findIndex(it=>it.market===market && it.id==id);
+    if(idx>-1) {
+        carrinho[idx].quantidade += delta;
+        if(carrinho[idx].quantidade<1) carrinho[idx].quantidade = 1;
+        salvarCarrinho(); listaCarrinho();
+    }
+}
+function defineQtd(market,id,val) {
+    const n = Number(val) || 1;
+    const idx = carrinho.findIndex(it=>it.market===market && it.id==id);
+    if(idx>-1) {
+        carrinho[idx].quantidade = n>=1 ? n: 1;
+        salvarCarrinho(); listaCarrinho();
+    }
+}
+function removerItem(market, id) {
+    carrinho = carrinho.filter(it => !(it.market===market && it.id==id));
+    salvarCarrinho(); listaCarrinho();
+}
+function limparCarrinho() {
+    if (confirm("Tem certeza que deseja esvaziar o carrinho?")) {
+        carrinho = [];
+        salvarCarrinho(); listaCarrinho();
+    }
+}
 
-        // Mostrar o supermercado A ao iniciar
-        window.onload = () => {
-            mostrarPromocoes('A');
-        };
-    </script>
+/** Modal de comparação de preços **/
+function finalizarCompra() {
+    if (carrinho.length == 0) {
+        showToast("Adicione produtos ao carrinho!", "error"); return;
+    }
+    // Gera lista de produtos únicos
+    let produtos_carrinho = {};
+    for (const item of carrinho) {
+        let key = item.nome.toLowerCase();
+        produtos_carrinho[key] = {nome:item.nome, quantidade:item.quantidade, categoria:item.categoria };
+    }
+    // Para cada supemercado, calcula total considerando só itens realmente existentes naquele mercado
+    let totais = { bh:0, duvale:0, cd:0 };
+    let detalhes = { bh:[], duvale:[], cd:[] };
+    for (const mark in SUPERMARKETS) {
+        for (const prodKey in produtos_carrinho) {
+            // Busca produto por nome (case-insensitive)
+            let prod = produtos[mark].find(
+                p => p.nome.toLowerCase() === prodKey && p.estoque !== 0
+            );
+            if (prod) {
+                totais[mark] += prod.preco * produtos_carrinho[prodKey].quantidade;
+                detalhes[mark].push({
+                    nome:prod.nome, preco:prod.preco, total:prod.preco*produtos_carrinho[prodKey].quantidade,
+                    img:prod.img, quantidade:produtos_carrinho[prodKey].quantidade
+                });
+            } else {
+                detalhes[mark].push({
+                    nome:produtos_carrinho[prodKey].nome, preco:null, total:null,
+                    img:'https://cdn-icons-png.flaticon.com/512/6711/6711102.png', quantidade:produtos_carrinho[prodKey].quantidade
+                });
+            }
+        }
+    }
+    // Coloca tabela detalhada
+    let tbl = '<table class="compare-table"><tr><th>Produto</th>';
+    for (const mark in SUPERMARKETS) {
+        tbl += `<th><img src="${SUPERMARKETS[mark].logo}" width="26" style="border-radius:6px;"> <span>${SUPERMARKETS[mark].nome.replace('Supermercado','')}</span></th>`;
+    }
+    tbl += '</tr>';
+    // para cada produto da compra
+    for (const prodKey in produtos_carrinho) {
+        tbl += `<tr><td>${produtos_carrinho[prodKey].nome} <span style="color:#acb;">x${produtos_carrinho[prodKey].quantidade}</span></td>`;
+        for (const mark in SUPERMARKETS) {
+            let found = detalhes[mark].find(p=>p.nome === produtos_carrinho[prodKey].nome);
+            if (found.preco===null) {
+                tbl += `<td style="color:#888;opacity:.53;"><span style="font-size:1.1em;">&#10060; Não encontrado</span></td>`;
+            } else {
+                tbl += `<td>R$ ${found.preco.toFixed(2)}<br>
+                <span style="color:#4e6379;">${(found.total).toFixed(2)}</span></td>`;
+            }
+        }
+        tbl += `</tr>`;
+    }
+    tbl += '</table>';
+    // Gera total comparativo visual
+    let arrTotais = Object.entries(totais);
+    let min = Math.min(...arrTotais.map(([m,v])=>v));
+    let minMercados = arrTotais.filter(([m,v])=>v==min).map(([m])=>m); // empate possível
+    let max = Math.max(...arrTotais.map(([m,v])=>v));
+    let maxMercados = arrTotais.filter(([m,v])=>v==max).map(([m])=>m); // empate possível
+    let corMap = {};
+    for (const [m, val] of arrTotais) {
+        if (val == min) corMap[m]='compare-best';
+        else if (val == max) corMap[m]='compare-worst';
+        else corMap[m]='compare-mid';
+    }
+    let totalTab = '<table class="compare-table" style="margin-top:7px;">';
+    totalTab += '<tr><th>Supermercado</th><th>Total Carrinho</th><th>Dica</th></tr>';
+    for (const [m, val] of arrTotais) {
+        let dica = '';
+        if (corMap[m]==='compare-best') dica = 'Mais vantajoso!';
+        if (corMap[m]==='compare-worst') dica = 'Mais caro';
+        if (corMap[m]==='compare-mid') dica = 'Preço intermediário';
+        totalTab += `<tr class="${corMap[m]}">
+            <td><img src="${SUPERMARKETS[m].logo}" width="22" style="vertical-align:middle;border-radius:6px;">
+            ${SUPERMARKETS[m].nome}</td>
+            <td><b>R$ ${val.toFixed(2)}</b></td>
+            <td>${dica}</td></tr>`;
+    }
+    totalTab += '</table>';
+    document.getElementById("compareTableContainer").innerHTML = tbl;
+    document.getElementById("compareTotals").innerHTML = totalTab;
+    // Abre modal
+    document.getElementById("compareModalBg").style.display='block';
+    document.getElementById("compareModal").style.display='block';
+}
+function fechaComparacao() {
+    document.getElementById("compareModalBg").style.display='none';
+    document.getElementById("compareModal").style.display='none';
+}
+function recomecarCompra() {
+    fechaComparacao(); limparCarrinho(); fechaCarrinho();
+    showToast("Carrinho limpo, comece uma nova comparação!", "info");
+}
+
+/* Toastr de avisos simples */
+function showToast(msg, tipo) {
+    let el = document.getElementById("toast");
+    el.textContent = msg;
+    el.className = tipo||'info';
+    el.style.visibility = 'visible';
+    setTimeout(()=> {el.style.visibility='hidden';}, 2500);
+}
+/* Ao iniciar */
+window.onload = function() {
+    // Recupera supermercado anterior, se houver
+    let sel = localStorage.getItem("marketSel")||'bh';
+    let btn = Array.from(document.querySelectorAll("nav button")).find(
+        b=>b.textContent.includes(SUPERMARKETS[sel].nome.split(' ')[1])
+    );
+    selecionaMercado(sel, btn||document.querySelector("nav button"));
+    carregarCarrinho();
+};
+</script>
+
 </body>
 </html>
