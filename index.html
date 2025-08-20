@@ -1,537 +1,262 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<title>Comparador de Supermercados</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
-<style>
-:root {
- --primary: #0d48a8;
- --success: #5db852;
- --danger: #e53636;
- --bgcard: #fff;
- --muted: #f5f9fa;
- --offer: #f69d23;
- --offer-glow: #ffe8bd;
-}
-/* Fundo imagem supermercado */
-body {
-    margin:0;
-    font-family: 'Roboto', Arial, sans-serif;
-    color: #162735;
-    background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1300&q=80') center/cover no-repeat fixed, var(--muted);
-    min-height: 100vh;
-    background-blend-mode: lighten;
-}
-.bg-blur {
-    position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:-2;
-    background:rgba(255,255,255,0.77);
-    backdrop-filter: blur(3.5px);
-}
-/* HEADER */
-header {
-    text-align:center;
-    padding:28px 10px 11px 10px;
-    background: rgba(13,72,168,0.92);
-    color: #fff;
-    box-shadow: 0 1.5px 17px #9bbce0;
-}
-header h1{margin:0;font-size:2.1em;letter-spacing:.7px}
-header p{margin:5px 0 0;font-size:1.03em;opacity:0.96;}
-/* SEARCH */
-.search-bar {
-    text-align:center;
-    margin:18px auto 8px auto;
-    position:relative;
-}
-#searchInput {
-    padding: 10px 50px 10px 16px;
-    width: 330px;
-    max-width:80vw;
-    border: 2px solid var(--primary);
-    border-radius: 28px;
-    font-size: 1.04em;
-    background: #f9fbff;
-    font-family: inherit;
-    outline:none;
-    box-shadow: 0 1px 10px #d1e4fc42;
-}
-.search-bar svg {
-    position: absolute;
-    right: 28px;
-    top: 52%;
-    transform: translateY(-50%);
-    color: var(--primary);
-    opacity:.6;
-    pointer-events: none;
-}
-/* PRODUCTS */
-.products-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
-    justify-content: center;
-    margin:0 0 36px 0;
-    max-width:1100px;
-    margin-left:auto;margin-right:auto;
-}
-.product-card {
-    background: var(--bgcard);
-    border-radius:17px;
-    box-shadow: 0 3px 22px #cfdefb5a;
-    width:210px;
-    position:relative;
-    padding:13px 12px 24px 12px;
-    display:flex; flex-direction:column; align-items:center;
-    transition:.16s;
-}
-.product-card:hover {
-    box-shadow: 0 7px 40px #a2d2fc85;
-    transform:scale(1.025);
-    z-index:2;
-}
-.product-img {
-    max-width:86px;max-height:85px;
-    background:#fff;
-    border-radius: 8px;
-    box-shadow: 0 1.5px 7px #eee9;
-    margin-bottom:11px;
-}
-.product-title {
-    font-weight:bold;font-size:1.08em;margin-bottom:7px;text-align:center;
-}
-.product-category{
-    font-size: .93em;
-    color: #547db9;
-    margin-bottom: 5px;
-}
-.product-prices {
-    display: flex;
-    flex-direction: column;
-    gap:3px;
-    margin: 7px 0 2px 0;
-    width:100%;
-}
-.product-price-row {
-    display: flex;align-items: center;justify-content:space-between;width:99%;
-}
-.market-tag {
-    display: flex;align-items:center;gap:6px;
-}
-.market-tag img { width:22px; border-radius:7px;}
-.market-tag span {
-    font-weight: bold;
-    font-size: .95em;
-    color: #457bba;
-}
-.price-label {
-    font-weight: bold;font-size:1em;letter-spacing:.5px;}
-.price-offer {
-    background: var(--offer); color: #fff;padding:2.5px 8px;border-radius:10px;
-    margin-left:6px;font-size:.99em;font-weight:bold;
-    box-shadow: 0 0 8px var(--offer-glow);
-}
-.add-cart-btn {
-    background: var(--primary);
-    border: none;
-    color: #fff;
-    padding: 8px 20px;
-    border-radius: 15px;
-    font-weight:bold;
-    margin-top:8px;
-    font-size: .98em;
-    cursor:pointer;
-    transition: background .17s;
-    box-shadow: 0 1.3px 7px #b6d6f7;
-}
-.add-cart-btn:hover{background:var(--success);}
-.prod-qty-div {
-    margin-top:5px;
-    display: flex;align-items:center;gap:2px;
-}
-.prod-qty-div input {
-    width:36px;height:27px;border:1.2px solid var(--muted);
-    border-radius:7px;text-align:center;font-size:1em;
-}
-.prod-qty-div button {
-    background: var(--primary); color:#fff;
-    width: 21px; height: 24px; border:none;border-radius:7px;cursor:pointer; font-size:.99em;
-}
-.out-stock-badge {
-    position:absolute;top:9px;left:10px;
-    background:var(--danger);
-    color:#fff;
-    border-radius:9px;
-    padding:3px 10px;font-size:.93em;font-weight:600;
-    box-shadow:0 0 11px #e2c0c0a2;
-}
-/* CART FAB */
-.cart-fab {
-    position: fixed;
-    right: 25px; bottom: 25px;
-    background: var(--primary);
-    color: #fff;
-    width: 62px; height: 62px;
-    border-radius: 56%;
-    box-shadow: 0 3px 34px #b0cffb;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.5em;
-    z-index: 1100;
-    border: 4px solid #fff;
-    cursor: pointer;
-    transition: background .18s, box-shadow .19s;
-}
-.cart-fab:hover { background: var(--success); }
-.cart-count {
-    position: absolute;top: 9px; right: 12px;
-    background: var(--danger);
-    color: #fff;
-    font-size: 1em; border-radius:50%;
-    width: 26px; height: 26px;display: flex;align-items: center;justify-content: center;
-    font-weight: bold;box-shadow: 0 2px 8px #f6bfc4;border:1.5px solid #fff;
-}
-@media (max-width:780px){
-    .products-list{gap:15px;}
-    .product-card{width:98vw;max-width:350px;}
-}
-@media (max-width:580px){
- #searchInput {max-width:97vw;width:96vw;}
- .product-card {font-size:.98em;}
-}
-.cart-modal-bg, .compare-modal-bg { display:none; position:fixed;z-index:1500;left:0;top:0;width:100vw;height:100vh;background:rgba(97,126,165,0.12); }
-.cart-modal {
-    display:none;
-    position:fixed;right:0;top:0;height:100vh;width:400px;max-width:99vw;
-    background:#fff;
-    box-shadow: -6px 0 38px #b6cef7;
-    z-index:1201;
-    padding:0 0 26px 0;overflow-y:auto;
-    animation:cartIn .18s;  
-}
-@keyframes cartIn {from{transform:translateX(140px);opacity:0;}to{transform:translateX(0);opacity:1;}}
-.cart-header{display:flex;justify-content: space-between;align-items:center;background:var(--primary);color:#fff;padding:16px 19px 12px 22px;}
-.cart-header button{background:none;border:none;color:#fff;font-size:1.25em;cursor:pointer;font-weight:bold;}
-.cart-items{padding:14px 17px 8px 14px;}
-.cart-item{display:flex;align-items:center;margin-bottom:13px;border-bottom:1px solid #f0f4fc;padding-bottom:7px;}
-.cart-item img{max-width:50px;max-height:45px;margin-right:9px;border-radius:4px}
-.cart-item-title{font-weight:bold;margin-bottom:3px;}
-.cart-item-market{font-size:.9em;color:#6ea4ea;margin-bottom:2px;}
-.cart-item-price{color:var(--primary);font-weight:600;font-size:1em;}
-.cart-qty-div{display:flex;align-items:center;margin-top:5px;}
-.cart-qty-div input{width:36px;height:27px;border:1.2px solid var(--muted);border-radius:7px;text-align:center;}
-.cart-qty-div button{background:var(--primary);color:#fff;width:22px;height:23px;border:none;border-radius:7px;cursor:pointer}
-.cart-remove{background:var(--danger);color:#fff;border:none;border-radius:7px;font-size:1.0em;padding:5px 8px;cursor:pointer;margin-left:7px;box-shadow:0 1px 4px #ffe0e2;transition:background .14s;}
-.cart-remove:hover{background:#a91f2f;}
-.cart-footer{padding:15px 17px 5px 18px;border-top:2px solid #f0f4fc;}
-.cart-finalizar{background:var(--success);color:#fff;border:none;border-radius:26px;padding:13px 18px;font-size:17px;font-weight:bold;cursor:pointer;margin-top:16px;box-shadow:0 1.5px 11px #cdebbf;width:100%;transition:background .13s;}
-.cart-finalizar:hover{background:var(--primary);}
-.cart-limpar{background:var(--danger);color:#fff;border:none;border-radius:13px;padding:6px 14px;cursor:pointer;font-size:.96em;float:right}
-.cart-info{font-size:.92em;margin-top:8px;color:#666;}
-@media (max-width:900px){.cart-modal{width:96vw;}}
-/* MODAL DE COMPARAÇÃO */
-.compare-modal-bg{display:none; position:fixed;z-index:1550;left:0;top:0;width:100vw;height:100vh;background:rgba(24,46,63,0.19);}
-.compare-modal {
- display:none; position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
- background:#fff;padding:26px 13px 17px 13px;max-width:540px;width:96vw;
- border-radius:16px;box-shadow:0 10px 38px #a9caee;z-index:1551;
-}
-.compare-title{text-align:center;font-weight:700;font-size:1.4em;color:var(--primary);margin-bottom:14px;}
-.compare-table{width:96%;border-collapse:collapse;margin:auto;}
-.compare-table th,.compare-table td{padding:9px 7px;text-align:center;}
-.compare-table th{background:var(--primary);color:#fff;}
-.compare-best{background:var(--success);color:#fff;font-weight:bold;}
-.compare-mid{background:var(--offer);color:#fff;font-weight:bold;}
-.compare-worst{background:var(--danger);color:#fff;font-weight:bold;}
-.compare-restart{background:var(--primary);color:#fff;border:none;border-radius:19px;padding:8px 17px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:14px;}
-.compare-restart:hover{background:var(--success);}
-.compare-close{position:absolute;right:16px;top:13px;background:none;border:none;color:var(--danger);font-weight:bold;font-size:1.6em;cursor:pointer;}
-/* Toast simples */
-#toast{visibility:hidden;min-width:220px;margin-left:-110px;position:fixed;z-index:3000;left:50%;top:25px;background:var(--primary);color:#fff;font-weight:600;text-align:center;border-radius:8px;padding:11px;font-size:1.04em;box-shadow:0 .7px 8px #c3dcff;}
-#toast.success{background:var(--success);}
-#toast.info{background:var(--primary);}
-#toast.error{background:var(--danger);}
-</style>
+    <meta charset="UTF-8">
+    <title>Comparador de Supermercados</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body{font-family:sans-serif;background:#f3f8fe;margin:0}
+        header{background:#1479cb;color:#fff;padding:16px 8px;text-align:center;}
+        .search-bar{margin:19px auto 12px;text-align:center;}
+        #searchInput{width:300px;max-width:96vw;padding:10px 14px;border:2px solid #1479cb;border-radius:24px;font-size:1em;}
+        .products-list{display:flex;flex-wrap:wrap;gap:19px;justify-content:center;}
+        .product-card{background:#fff;padding:13px 9px 19px 9px;border-radius:13px;box-shadow:0 2.5px 13px #bfdcf74f;display:flex;flex-direction:column;align-items:center;width:189px;}
+        .product-card img{max-width:78px;max-height:75px;margin-bottom:8px;background:#ececec;border-radius:7px;}
+        .product-title{font-weight:bold;font-size:1.08em;margin-bottom:6px;margin-top:7px;text-align:center;}
+        .product-category{color:#2589c0;font-size:.97em;}
+        .price-table{width:98%;margin:10px auto 2px;border-collapse:collapse;}
+        .price-table td{padding:4px 5px;font-size:.98em;}
+        .add-cart-btn{margin-top:8px;background:#1479cb;color:#fff;border:none;border-radius:18px;padding:6px 19px;font-weight:bold;cursor:pointer;}
+        .cart-fab{position:fixed;right:22px;bottom:22px;background:#1479cb;color:#fff;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2em;box-shadow:0 2px 18px #abcdeb;cursor:pointer;z-index:200;}
+        .cart-count{position:absolute;top:5px;right:8px;background:#e53636;color:#fff;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:50%;font-weight:bold;}
+        .cart-modal-bg{display:none;position:fixed;z-index:210;left:0;top:0;width:100vw;height:100vh;background:rgba(40,65,120,.14);}
+        .cart-modal{display:none;position:fixed;right:0;top:0;max-width:99vw;width:380px;z-index:211;height:100vh;background:#fff;box-shadow:-6px 0 22px #b6cef7;padding-bottom:20px;overflow-y:auto;}
+        .cart-header{background:#1479cb;color:#fff;padding:13px 16px 10px;font-size:1.12em;display:flex;justify-content:space-between;align-items:center}
+        .cart-header button{background:none;border:none;color:#fff;font-size:1.3em;font-weight:bold;cursor:pointer;}
+        .cart-items{padding:13px;}
+        .cart-item{display:flex;align-items:center;margin-bottom:13px;}
+        .cart-item img{max-width:43px;max-height:39px;margin-right:7px;border-radius:4px;}
+        .cart-item-title{font-weight:600;margin-bottom:3px;}
+        .cart-item-price{color:#1479cb;font-size:.97em;}
+        .cart-qty-div{display:flex;align-items:center;margin-top:5px;}
+        .cart-qty-div button{background:#1479cb;color:#fff;width:21px;height:22px;border-radius:7px;border:none;cursor:pointer;}
+        .cart-qty-div input{width:29px;height:20px;text-align:center;}
+        .cart-remove{background:#e53636;color:#fff;border:none;border-radius:7px;font-size:.97em;padding:3px 6px;cursor:pointer;margin-left:5px;}
+        .cart-footer{padding:14px 19px;}
+        .cart-finalizar{background:#43a84a;color:#fff;border:none;border-radius:16px;padding:9px 16px;font-size:1.08em;font-weight:bold;cursor:pointer;width:100%;margin-top:13px;}
+        .compare-modal-bg{display:none;position:fixed;left:0;top:0;width:100vw;height:100vh;background:rgba(24,46,63,.18);z-index:300;}
+        .compare-modal{display:none;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;padding:24px 11px 15px;max-width:92vw;width:360px;border-radius:15px;z-index:310;}
+        .compare-title{text-align:center;font-weight:700;font-size:1.15em;color:#1479cb;margin-bottom:14px;}
+        .compare-table{width:96%;margin:auto;border-collapse:collapse;}
+        .compare-table th,.compare-table td{padding:7px 6px;text-align:center;}
+        .compare-table th{background:#1479cb;color:#fff;}
+        .compare-best{background:#43a84a;color:#fff;font-weight:bold;}
+        .compare-worst{background:#e53636;color:#fff;font-weight:bold;}
+        .compare-mid{background:#fbbd35;color:#fff;font-weight:bold;}
+        .compare-close{position:absolute;right:19px;top:13px;background:none;border:none;color:#e53636;font-size:1.41em;font-weight:bold;cursor:pointer;}
+        #toast{visibility:hidden;min-width:180px;position:fixed;z-index:4000;left:50%;top:18px;margin-left:-100px;background:#2589c0;color:#fff;font-weight:600;text-align:center;border-radius:7px;padding:10px;font-size:.99em;box-shadow:0 .7px 8px #dcdcf9;}
+        #toast.success{background:#43a84a;}
+        #toast.error{background:#e53636;}
+        #toast.info{background:#1479cb;}
+        @media (max-width:600px){
+            #searchInput{width:98vw;}
+            .product-card{width:99vw;}
+            .cart-modal{width:99vw;}
+            .compare-modal{width:99vw;}
+        }
+    </style>
 </head>
 <body>
-<div class="bg-blur"></div>
-<header>
-    <h1>Comparador de Supermercados</h1>
-    <p>Encontre o melhor preço para seus produtos favoritos! Pesquise abaixo, adicione ao carrinho e compare o total em cada supermercado.</p>
-</header>
-<!-- Barra de pesquisa -->
-<div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Busque por produto (ex: arroz, detergente)..." oninput="filtrarProdutos()">
-    <svg width="22" height="22" viewBox="0 0 24 24"><path fill="#0d48a8" opacity="0.6" d="M9.5 3a6.5 6.5 0 0 1 5.192 10.446l4.18 4.182a1 1 0 0 1-1.32 1.497l-.094-.083-4.18-4.18A6.5 6.5 0 1 1 9.5 3zm0 2a4.5 4.5 0 1 0 0 9a4.5 4.5 0 0 0 0-9z"/></svg>
-</div>
-<!-- Produtos -->
-<div class="products-list" id="productsContainer"></div>
-<!-- Botão Carrinho -->
-<div class="cart-fab" id="cartFab" onclick="abrirCarrinho()" title="Abrir carrinho">
-    <svg viewBox="0 0 24 24" fill="none" height="28" width="28">
-        <path d="M7.99 18a2 2 0 1 0 0 4 2 2 0 1 0 0-4zm7 2a2 2 0 1 0 4 0 2 2 0 1 0-4 0zM7.16 16h10.58a4 4 0 0 0 3.92-3.03l1.3-5.19A2 2 0 0 0 21.05 5H6.21l-.35-1.4A2 2 0 0 0 4 2H2v2h2l3.6 14.4c.2.8 1 1.6 1.99 1.6h10.58v-2z" fill="#fff"/>
-    </svg>
-    <span class="cart-count" id="cartCount" style="display:none;">0</span>
-</div>
-<!-- Carrinho Flutuante -->
-<div class="cart-modal-bg" id="cartModalBg" onclick="fecharCarrinho()"></div>
-<aside class="cart-modal" id="cartModal">
-    <div class="cart-header">
-        <span>Seu Carrinho</span>
-        <button onclick="fecharCarrinho()">&times;</button>
+    <header>
+        <h1>Comparador de Supermercados</h1>
+        <p>Pesquise por um produto, adicione ao carrinho, e compare o preço em cada supermercado!</p>
+    </header>
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Busque por produto..." oninput="listarProdutos()">
     </div>
-    <div class="cart-items" id="cartItems"></div>
-    <div class="cart-footer">
-        <button class="cart-finalizar" onclick="compararPrecos()">Comparar nos supermercados</button>
-        <button class="cart-limpar" onclick="limparCarrinho()">Limpar carrinho</button>
-        <div class="cart-info" id="cartSubtotal"></div>
+    <div class="products-list" id="productsContainer">
+        <div>Carregando produtos...</div>
     </div>
-</aside>
-<!-- Modal Comparação -->
-<div class="compare-modal-bg" id="compareModalBg" onclick="fecharComparacao()"></div>
-<div class="compare-modal" id="compareModal">
-    <button class="compare-close" onclick="fecharComparacao()">&times;</button>
-    <div class="compare-title">Comparativo de Preço</div>
-    <div id="compareTableContainer"></div>
-    <button class="compare-restart" onclick="recomecarCompra()">Fazer nova comparação</button>
-</div>
-<!-- Toast -->
-<div id="toast"></div>
+    <div class="cart-fab" id="cartFab" onclick="abrirCarrinho()" title="Abrir carrinho">
+        🛒<span class="cart-count" id="cartCount" style="display:none;">0</span>
+    </div>
+    <!-- Carrinho -->
+    <div class="cart-modal-bg" id="cartModalBg" onclick="fecharCarrinho()"></div>
+    <aside class="cart-modal" id="cartModal">
+        <div class="cart-header">
+            <span>Seu Carrinho</span>
+            <button onclick="fecharCarrinho()">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer">
+            <button class="cart-finalizar" onclick="compararPrecos()">Comparar preços</button>
+            <div class="cart-info" id="cartSubtotal"></div>
+        </div>
+    </aside>
+    <!-- Comparação -->
+    <div class="compare-modal-bg" id="compareModalBg" onclick="fecharComparacao()"></div>
+    <div class="compare-modal" id="compareModal">
+        <button class="compare-close" onclick="fecharComparacao()">&times;</button>
+        <div class="compare-title">Comparativo de Preço</div>
+        <div id="compareTableContainer"></div>
+    </div>
+    <div id="toast"></div>
 <script>
-const SUPERMARKETS = {
-    bh:   {nome:'BH', logo:'https://yt3.googleusercontent.com/vgeMfc02YxL3_P8TbkXwQ6m8ap93sHPLJvN1Hs8Hp5swDRF_PuYaI_rnJE16HOp7h013hCKm=s900-c-k-c0x00ffffff-no-rj', cor:'#1877e6'},
-    duvale: {nome:'Duvale', logo:'https://www.duvale.com.br/images/duvale-png.png', cor:'#efb91b'},
-    cd: {nome:'Coelho Diniz', logo:'https://media.glassdoor.com/sqll/2560397/supermercados-coelho-diniz-squarelogo-1568642614016.png', cor:'#10654b'}
-};
-// 20 produtos exemplos (categoria, nome, imagem, badge oferta, preços nos supermercados reais)
-const PRODUTOS = [
- {id:1, nome:"Arroz Camil 5kg", categoria:"Alimentos", img:"https://a-static.mlcdn.com.br/800x560/arroz-camil-5kg-arroz-camil-principal/camil/893aad3d4ef611eba19c42010a246012/bfc7e7937262d984e34fdcaf73d62b62.jpeg",
-    oferta:{bh:true,duvale:true,cd:false},
-    preco:{bh:22.89,duvale:21.59,cd:23.29}},
- {id:2, nome:"Feijão Carioca 1kg", categoria:"Alimentos", img:"https://static.paodeacucar.com/img/uploads/1/681/456681.png",
-    oferta:{bh:false,duvale:true,cd:true}, preco:{bh:8.99, duvale:8.69, cd:7.99}},
- {id:3, nome:"Óleo de Soja Soya 900ml", categoria:"Alimentos", img:"https://www.soya.com.br/assets/img/og/oleosoya-900ml.png",
-    oferta:{bh:false,duvale:false,cd:false}, preco:{bh:7.45, duvale:7.29, cd:7.89}},
- {id:4, nome:"Açúcar União Refinado 1kg", categoria:"Alimentos", img:"https://www.drogarianet.com.br/media/product/57c/açucar-uniao-1kg-660.jpg",
-    oferta:{bh:true,duvale:false,cd:true}, preco:{bh:4.49, duvale:4.69, cd:4.39}},
- {id:5, nome:"Macarrão Espaguete Renata 500g", categoria:"Alimentos", img:"https://superprix.vteximg.com.br/arquivos/ids/163947-1000-1000/2025144.jpg?v=636957775872030000",
-    oferta:{bh:true,duvale:true,cd:false}, preco:{bh:3.39, duvale:3.49, cd:3.59}},
- {id:6, nome:"Café Pilão 250g", categoria:"Bebidas", img:"https://io.convertiez.com.br/m/drogariaminasbrasil/shop/products/images/18739/medium/cafe-pilao-250g_124735.jpg",
-    oferta:{bh:false,duvale:false,cd:true}, preco:{bh:10.29, duvale:9.99, cd:9.49}},
- {id:7, nome:"Leite Integral 1L", categoria:"Bebidas", img:"https://www.italac.com.br/uploads/produtos/leite-integral-1l.png",
-    oferta:{bh:false,duvale:true,cd:false}, preco:{bh:4.79, duvale:4.45, cd:4.49}},
- {id:8, nome:"Refrigerante Coca-Cola 2L", categoria:"Bebidas", img:"https://www.coca-cola.com.br/content/dam/one/brands/coke/br/products/coca-cola-original-lata-350ml.png",
-    oferta:{bh:true,duvale:false,cd:false}, preco:{bh:8.99, duvale:9.49, cd:8.89}},
- {id:9, nome:"Molho de Tomate 340g", categoria:"Alimentos", img:"https://superprix.vteximg.com.br/arquivos/ids/177285-1000-1000/2029527.jpg?v=636957832952900000",
-    oferta:{bh:false,duvale:true,cd:false}, preco:{bh:2.45, duvale:2.09, cd:2.25}},
- {id:10, nome:"Farinha de Trigo Dona Benta 1kg", categoria:"Alimentos", img:"https://images.tcdn.com.br/img/img_prod/607087/farinha_de_trigo_dona_benta_1kg_427_1_20181206122041.jpg",
-    oferta:{bh:true,duvale:false,cd:true}, preco:{bh:4.19, duvale:4.49, cd:4.05}},
- {id:11, nome:"Detergente Ypê Neutro 500ml", categoria:"Limpeza", img:"https://static.paodeacucar.com/img/uploads/1/634/116534.png",
-    oferta:{bh:false,duvale:true,cd:true}, preco:{bh:2.79, duvale:2.39, cd:2.35}},
- {id:12, nome:"Sabão em Pó Omo Lavagem Perfeita 800g", categoria:"Limpeza", img:"https://static.paodeacucar.com/img/uploads/1/390/370390.png",
-    oferta:{bh:false,duvale:true,cd:false}, preco:{bh:11.29, duvale:10.89, cd:12.19}},
- {id:13, nome:"Desinfetante Lysoform 500ml", categoria:"Limpeza", img:"https://static.paodeacucar.com/img/uploads/1/985/359985.png",
-    oferta:{bh:true,duvale:false,cd:false}, preco:{bh:5.59, duvale:5.89, cd:6.15}},
- {id:14, nome:"Amaciante Comfort 500ml", categoria:"Limpeza", img:"https://superprix.vteximg.com.br/arquivos/ids/164342-1000-1000/2031633.jpg",
-    oferta:{bh:false,duvale:false,cd:true}, preco:{bh:7.69, duvale:7.89, cd:7.39}},
- {id:15, nome:"Papel Higiênico Neve 12x30m", categoria:"Limpeza", img:"https://superprix.vteximg.com.br/arquivos/ids/166393-1000-1000/2035143.jpg",
-    oferta:{bh:true,duvale:false,cd:false}, preco:{bh:20.19, duvale:21.49, cd:19.99}},
- {id:16, nome:"Biscoito Trakinas 126g", categoria:"Alimentos", img:"https://io.convertiez.com.br/m/drogariaminasbrasil/shop/products/images/5649/medium/biscoito-trakinas-126g_6732.jpg",
-    oferta:{bh:false,duvale:false,cd:true}, preco:{bh:2.69, duvale:2.85, cd:2.49}},
- {id:17, nome:"Achocolatado Nescau 400g", categoria:"Alimentos", img:"https://www.nestle.com.br/images/nescau-400g.png",
-    oferta:{bh:false,duvale:false,cd:false}, preco:{bh:7.19, duvale:7.09, cd:7.29}},
- {id:18, nome:"Salsicha Sadia 1kg", categoria:"Frios", img:"https://superprix.vteximg.com.br/arquivos/ids/172587-1000-1000/2029354.jpg",
-    oferta:{bh:true,duvale:false,cd:false}, preco:{bh:13.39, duvale:14.19, cd:13.99}},
- {id:19, nome:"Frango Congelado Sadia 1kg", categoria:"Carnes", img:"https://superprix.vteximg.com.br/arquivos/ids/176679-1000-1000/2042318.jpg",
-    oferta:{bh:false,duvale:true,cd:false}, preco:{bh:13.29, duvale:12.99, cd:13.59}},
- {id:20, nome:"Linguiça Toscana Seara 1kg", categoria:"Carnes", img:"https://superprix.vteximg.com.br/arquivos/ids/175505-1000-1000/2044288.jpg?v=636961409235300000",
-    oferta:{bh:false,duvale:true,cd:true}, preco:{bh:16.99, duvale:15.99, cd:15.49}}
+// Defina aqui o link CSV público da sua planilha
+const LINK_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS-dB_7ATOb6_pfxzOey8AzH5zS92qIGtloBdDHkbbPk-8Nltgb15PeR_s0VBpVj58pspSAfIW_Bb97/pub?output=csv";
+const BASE_IMG = 'https://gabryelteixeirasousa-cpu.github.io/supermercado-site/';
+
+const SUPS = [
+    { market:"BH", cor:'#1479cb' },
+    { market:"Duvale", cor:'#fbbd35' },
+    { market:"CD", cor:'#43a84a' }
 ];
-let filtroProdutos = '';
-function filtrarProdutos() {
-    filtroProdutos = document.getElementById("searchInput").value.toLowerCase().trim();
+
+let PRODUTOS = [];
+let carrinho = [];
+
+/* --- CSV --- */
+async function carregarProdutos(){
+    const resp = await fetch(LINK_CSV);
+    const txt = await resp.text();
+    const linhas = txt.trim().split('\n');
+    const chaves = linhas[0].split(',').map(t=>t.trim().replace(/"/g,''));
+    PRODUTOS = linhas.slice(1).map(linha=>{
+        let col=linha.split(',').map(t=>t.trim().replace(/"/g,''));
+        let prod={};
+        chaves.forEach((k,i)=>prod[k]=col[i]);
+        return prod;
+    });
     listarProdutos();
 }
-// Lista de produtos renderizada
+function getNomeCorretoImagem(nome){
+    return nome ? nome.replace(/ /g,"_") : "";
+}
 function listarProdutos() {
+    let filtro = document.getElementById("searchInput").value.toLowerCase().trim();
     let html = '';
-    PRODUTOS.forEach(prod => {
-        if(filtroProdutos && !(
-            prod.nome.toLowerCase().includes(filtroProdutos) || 
-            (prod.categoria||'').toLowerCase().includes(filtroProdutos))
-        ) return;
-        let outStock = prod.estoque === 0;
+    let prodFiltrados = PRODUTOS.filter(p=>{
+        return (
+            p.nome.toLowerCase().includes(filtro) ||
+            p.categoria.toLowerCase().includes(filtro)
+        );
+    });
+    prodFiltrados.forEach(prod => {
+        let imgUrl = prod.imagem.startsWith('http') ? prod.imagem
+                    : (BASE_IMG + prod.imagem);
         html += `
-        <div class="product-card${outStock?' prod-outstock':''}">
-        ${outStock ? '<div class="out-stock-badge">Sem estoque</div>' : ''}
-        <img src="${prod.img}" alt="${prod.nome}" class="product-img">
-        <div class="product-title">${prod.nome}</div>
-        <div class="product-category">${prod.categoria || ''}</div>
-        <div class="product-prices">` +
-        Object.entries(SUPERMARKETS).map(([market, s])=>{
-            const preco = prod.preco[market];
-            let label = `<div class="product-price-row">
-                <span class="market-tag"><img src="${s.logo}"><span>${s.nome}</span></span>
-                <span class="price-label">R$ ${preco.toFixed(2)} ${prod.oferta[market]?'<span class="price-offer">OFERTA</span>':''}</span>
-                </div>`;
-            return label;
-        }).join('') +
-        `</div>
-        <div class="prod-qty-div">
-            <button onclick="mudaQuantidade(${prod.id}, -1)">-</button>
-            <input type="number" id="qtd_${prod.id}" value="1" min="1">
-            <button onclick="mudaQuantidade(${prod.id}, 1)">+</button>
-        </div>
-        <button class="add-cart-btn" onclick="addAoCarrinho(${prod.id})">Adicionar ao carrinho</button>
+        <div class="product-card">
+            <img src="${imgUrl}" alt="${prod.nome}">
+            <div class="product-title">${prod.nome}</div>
+            <div class="product-category">${prod.categoria||''}</div>
+            <table class="price-table">
+                <tr><td style="color:#1479cb;">BH</td><td>R$ ${Number(prod.BH).toFixed(2)}</td></tr>
+                <tr><td style="color:#fbbd35;">Duvale</td><td>R$ ${Number(prod.Duvale).toFixed(2)}</td></tr>
+                <tr><td style="color:#43a84a;">CD</td><td>R$ ${Number(prod.CD).toFixed(2)}</td></tr>
+            </table>
+            <div style="margin-top:8px;">
+                <button class="add-cart-btn" onclick="addAoCarrinho('${prod.nome}')">Adicionar ao carrinho</button>
+            </div>
         </div>
         `;
     });
-    document.getElementById("productsContainer").innerHTML = html || `<div style="text-align:center;opacity:.78;font-size:1.09em;margin-top:30px;">Nenhum produto encontrado...</div>`;
+    document.getElementById('productsContainer').innerHTML = html || `<div style="margin:30px auto;text-align:center;opacity:.6;">Nenhum produto encontrado...</div>`;
 }
-function mudaQuantidade(id, valor) {
-    let inpt = document.getElementById('qtd_'+id);
-    if (!inpt) return;
-    let novo = Math.max(1, Number(inpt.value) + valor);
-    inpt.value = novo;
-}
-let carrinho = [];
-function addAoCarrinho(id) {
-    let prod = PRODUTOS.find(p=>p.id==id);
+function addAoCarrinho(prodName){
+    let prod = PRODUTOS.find(p=>p.nome==prodName);
     if(!prod) return;
-    let qtd = Math.max(1, Number(document.getElementById('qtd_'+id).value));
-    let idx = carrinho.findIndex(i=>i.id==id);
-    if(idx > -1) carrinho[idx].qtd += qtd;
-    else carrinho.push({id:id, qtd:qtd});
+    let idx = carrinho.findIndex(it=>it.nome==prodName);
+    if(idx>-1){ carrinho[idx].qtd++; }
+    else { carrinho.push({ nome:prodName, qtd:1 }); }
     saveCarrinho();
-    mostreToast("Produto adicionado ao carrinho!","success");
+    showToast("Adicionado ao carrinho!","success");
     atualizaFab();
 }
-function abrirCarrinho() {
-    renderCarrinho();
+function abrirCarrinho(){
+    listarCarrinho();
     document.getElementById("cartModalBg").style.display='block';
     document.getElementById("cartModal").style.display='block';
 }
-function fecharCarrinho() {
+function fecharCarrinho(){
     document.getElementById("cartModalBg").style.display='none';
     document.getElementById("cartModal").style.display='none';
 }
-function atualizaFab() {
+function listarCarrinho(){
+    let html = '';
+    let total = 0;
+    carrinho.forEach(item => {
+        let prod = PRODUTOS.find(p=>p.nome==item.nome);
+        if(!prod) return;
+        let imgUrl = prod.imagem.startsWith('http') ? prod.imagem : (BASE_IMG + prod.imagem);
+        html += `<div class="cart-item">
+            <img src="${imgUrl}" alt="${item.nome}">
+            <div>
+                <div class="cart-item-title">${item.nome}</div>
+                <div class="cart-item-price">
+                    <span>Qtd: <button onclick="cartMudaQtd('${item.nome}',-1)">-</button>
+                    <input type="number" min="1" value="${item.qtd}" style="width:25px;" onchange="cartDefQtd('${item.nome}',this.value)">
+                    <button onclick="cartMudaQtd('${item.nome}',1)">+</button></span>
+                    <button class="cart-remove" onclick="removerDoCarrinho('${item.nome}')">&times;</button>
+                </div>
+            </div>
+        </div>`;
+    });
+    document.getElementById('cartItems').innerHTML = html || `<div style="text-align:center;opacity:.74;">Seu carrinho está vazio.</div>`;
+    // não soma valor ainda para subtotal (não há mercado definido)
+}
+function cartMudaQtd(nome,delta){
+    let idx=carrinho.findIndex(i=>i.nome==nome);
+    if(idx>-1){ carrinho[idx].qtd+=delta;if(carrinho[idx].qtd<1) carrinho[idx].qtd=1;}
+    saveCarrinho();listarCarrinho();atualizaFab();
+}
+function cartDefQtd(nome,val){
+    let idx=carrinho.findIndex(i=>i.nome==nome);
+    if(idx>-1 && val>=1){ carrinho[idx].qtd=Number(val);}
+    saveCarrinho();listarCarrinho();atualizaFab();
+}
+function removerDoCarrinho(nome){
+    carrinho=carrinho.filter(i=>i.nome!=nome);
+    saveCarrinho();listarCarrinho();atualizaFab();
+}
+/* Comparar Preços */
+function compararPrecos(){
+    if(!carrinho.length){showToast("Carrinho vazio!","error");return;}
+    let totais = SUPS.map(s=>{
+        let tot = 0;
+        for(const c of carrinho){
+            let prod = PRODUTOS.find(p=>p.nome==c.nome);
+            if(prod && prod[s.market]) tot += Number(prod[s.market])*c.qtd;
+        }
+        return {market:s.market, valor:tot, cor:s.cor};
+    });
+    let min = Math.min(...totais.map(t=>t.valor));
+    let max = Math.max(...totais.map(t=>t.valor));
+    let html = `<table class="compare-table"><tr>
+        <th>Supermercado</th><th>Total</th><th>Dica</th>
+    </tr>`;
+    for(const t of totais){
+        let classe = (t.valor==min)?"compare-best" : (t.valor==max)?"compare-worst":"compare-mid";
+        let dica = (t.valor==min)?"Mais vantajoso!" : (t.valor==max)?"Mais caro":"Intermediário";
+        html += `<tr class="${classe}">
+            <td style="font-weight:bold;color:${t.cor}">${t.market}</td>
+            <td>R$ ${t.valor.toFixed(2)}</td>
+            <td>${dica}</td>
+        </tr>`;
+    }
+    html+=`</table>`;
+    document.getElementById('compareTableContainer').innerHTML=html;
+    document.getElementById('compareModalBg').style.display='block';
+    document.getElementById('compareModal').style.display='block';
+}
+function fecharComparacao(){
+    document.getElementById('compareModalBg').style.display='none';
+    document.getElementById('compareModal').style.display='none';
+}
+function atualizaFab(){
     let count = carrinho.reduce((a,b)=>a+b.qtd,0);
     let el = document.getElementById("cartCount");
     el.style.display = count>0?'flex':'none';
     el.textContent = count;
 }
-function renderCarrinho() {
-    if(!carrinho.length) {
-        document.getElementById('cartItems').innerHTML = `<div style="text-align:center;opacity:.74;font-size:1.13em;">Seu carrinho está vazio.<br><br>
-        <img src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png" width="70" style="opacity:.28;margin-top:16px;">
-        </div>`;
-        document.getElementById("cartSubtotal").innerHTML = "";
-        return;
-    }
-    let html = '';
-    let subtotal = 0;
-    carrinho.forEach(item => {
-        let prod = PRODUTOS.find(p=>p.id==item.id);
-        if(!prod) return;
-        subtotal += item.qtd * Math.min(...Object.values(prod.preco));
-        html += `<div class="cart-item">
-        <img src="${prod.img}" alt="${prod.nome}">
-        <div>
-            <div class="cart-item-title">${prod.nome}</div>
-            <div class="cart-item-price">Qtd: 
-                <span style="margin-right:2px;"></span>
-                <button onclick="cartMudaQtd(${item.id},-1)">-</button> 
-                <input type="number" min="1" value="${item.qtd}" style="width:32px;" onchange="cartDefQtd(${item.id},this.value)">
-                <button onclick="cartMudaQtd(${item.id},1)">+</button>
-                <button class="cart-remove" onclick="removerDoCarrinho(${item.id})" title="Remover do carrinho">&times;</button>
-            </div>
-        </div>
-        </div>`;
-    });
-    document.getElementById('cartItems').innerHTML = html;
-    document.getElementById("cartSubtotal").innerHTML = `<b>Total no melhor preço: </b>R$ ${(subtotal).toFixed(2)}`;
-}
-function cartMudaQtd(id,delta){
-    let idx=carrinho.findIndex(i=>i.id==id);
-    if(idx>-1){ carrinho[idx].qtd+=delta;if(carrinho[idx].qtd<1) carrinho[idx].qtd=1;}
-    saveCarrinho(); renderCarrinho(); atualizaFab();
-}
-function cartDefQtd(id,valor){
-    let idx=carrinho.findIndex(i=>i.id==id); if(idx>-1 && valor>=1){ carrinho[idx].qtd=Number(valor);}
-    saveCarrinho(); renderCarrinho(); atualizaFab();
-}
-function removerDoCarrinho(id){
-    carrinho = carrinho.filter(i=>i.id!=id);
-    saveCarrinho(); renderCarrinho(); atualizaFab();
-}
-function limparCarrinho(){
-    if(confirm("Tem certeza que deseja limpar o carrinho?")){
-        carrinho=[];
-        saveCarrinho(); renderCarrinho(); atualizaFab();
-    }
-}
-// Comparação
-function compararPrecos(){
-    if(!carrinho.length){ mostreToast("Carrinho vazio!","error");return;}
-    let totalPorMercado = {bh:0,duvale:0,cd:0};
-    carrinho.forEach(item=>{
-        let prod = PRODUTOS.find(p=>p.id==item.id);
-        if(!prod) return;
-        Object.keys(SUPERMARKETS).forEach(m=>{
-            totalPorMercado[m] += (prod.preco[m]||99999)*item.qtd;
-        });
-    });
-    // pesquisa vencedores/intermediarios/caro
-    let totals = Object.entries(totalPorMercado);
-    let min = Math.min(...totals.map(e=>e[1]));
-    let max = Math.max(...totals.map(e=>e[1]));
-    let corMap = {};
-    for(const [m,valor] of totals){
-        if(valor==min) corMap[m]='compare-best'; else if(valor==max) corMap[m]='compare-worst'; else corMap[m]='compare-mid';
-    }
-    let html = `<table class="compare-table">
-    <tr>
-        <th>Supermercado</th>
-        <th>Total do carrinho</th>
-        <th>Dica</th>
-    </tr>`;
-    for(const [m,valor] of totals){
-        let dica='';
-        if(corMap[m]=='compare-best') dica='Mais vantajoso!';
-        else if(corMap[m]=='compare-worst') dica='Mais caro';
-        else dica='Preço intermediário';
-        html += `<tr class="${corMap[m]}">
-                <td><img src="${SUPERMARKETS[m].logo}" style="width:23px;vertical-align:middle;margin-right:5px;border-radius:6px;">${SUPERMARKETS[m].nome}</td>
-                <td><b>R$ ${valor.toFixed(2)}</b></td>
-                <td>${dica}</td>
-                </tr>`;
-    }
-    html += '</table>';
-    document.getElementById('compareTableContainer').innerHTML = html;
-    document.getElementById("compareModalBg").style.display='block';
-    document.getElementById("compareModal").style.display='block';
-}
-function fecharComparacao(){
-    document.getElementById("compareModalBg").style.display='none';
-    document.getElementById("compareModal").style.display='none';
-}
-function recomecarCompra(){
-    fecharComparacao(); limparCarrinho(); fecharCarrinho();
-    mostreToast("Carrinho limpo, pode começar de novo!","info");
-}
-function mostreToast(mensagem, tipo){
-    let el=document.getElementById("toast");
-    el.textContent=mensagem;el.className=tipo||'info';
+function saveCarrinho(){localStorage.setItem('cartGS',JSON.stringify(carrinho));}
+function loadCarrinho(){carrinho=JSON.parse(localStorage.getItem('cartGS')||'[]');atualizaFab();}
+function showToast(msg, tipo){
+    let el = document.getElementById("toast");
+    el.textContent = msg; el.className=tipo||'info';
     el.style.visibility='visible';
-    setTimeout(()=>{el.style.visibility='hidden';}, 2250);
+    setTimeout(()=>{el.style.visibility='hidden';}, 2000);
 }
-// Carrinho localStorage
-function saveCarrinho(){localStorage.setItem('cartMega',JSON.stringify(carrinho));}
-function loadCarrinho(){carrinho=JSON.parse(localStorage.getItem('cartMega')||'[]');atualizaFab();}
-window.onload=function(){listarProdutos();loadCarrinho();filtrarProdutos();}
+window.onload=()=>{loadCarrinho();carregarProdutos();}
 </script>
 </body>
 </html>
