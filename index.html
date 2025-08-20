@@ -2,140 +2,47 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Meu Supermercado - Login</title>
+    <title>Supermercado Gabryel</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f3f3f3;
-            margin: 0;
-            padding: 0;
+        body { font-family: Arial, sans-serif; background: #f3f3f3; margin:0; }
+        .login-container, .main-container { max-width: 1260px; margin: 60px auto 0; border-radius: 10px; }
+        .login-container {
+            background: #fff; max-width: 400px; padding: 38px 32px; box-shadow: 0 6px 22px #0001;
         }
-        .login-container, .main-container {
-            max-width: 410px;
-            background: #fff;
-            margin: 48px auto 0;
-            padding: 34px 34px 28px 34px;
-            border-radius: 8px;
-            box-shadow: 0 6px 22px #0001;
-        }
-        .login-container h2 {
-            text-align: center;
-            margin-bottom: 28px;
-        }
-        .login-container label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-        .login-container input[type="email"],
-        .login-container input[type="password"] {
-            display: block;
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #bbb;
-            border-radius: 4px;
-            margin-bottom: 18px;
-            font-size: 17px;
+        .login-container h2 { text-align: center; margin-bottom: 22px; }
+        .login-container label { font-weight: bold; }
+        .login-container input {
+            width: 100%; padding: 8px; border: 1px solid #bbb; border-radius: 5px; margin-bottom: 17px;
         }
         .login-container button {
-            width: 100%;
-            padding: 11px;
-            background: #36c574;
-            border: none;
-            color: #fff;
-            font-weight: bold;
-            border-radius: 5px;
-            font-size: 17px;
-            cursor: pointer;
-            margin-bottom: 6px;
+            width: 100%; padding: 10px; background: #36c574; border: none; color: #fff; font-weight: bold; border-radius: 5px; font-size: 17px; cursor: pointer;
         }
-        .login-container .error {
-            color: #d33;
-            margin-bottom: 14px;
-            text-align: center;
-            font-size: 15px;
+        .login-container .error { color: #d33; margin-bottom: 10px; text-align: center; font-size: 15px; }
+        .main-container { background: #fff; display: none; padding: 18px 3vw 33px 3vw; box-shadow: 0 6px 22px #0001; }
+        h1 { text-align: center; }
+        .filters { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-bottom: 16px; }
+        select, input[type="text"] {
+            padding: 6px 13px; border-radius: 6px; border: 1px solid #bbb; font-size: 16px;
         }
-        /* PRINCIPAL */
-        .main-container {
-            display: none;
-            max-width: 1260px;
-            padding: 32px;
-        }
-        h1, h2 {
-            text-align: center;
-        }
-        .filters {
-            display: flex;
-            justify-content: center;
-            gap: 18px;
-            margin-bottom: 20px;
-        }
-        .filters select, .filters input[type="text"] {
-            padding: 6px 12px;
-            border: 1px solid #bbb;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        table {
-            width: 98%;
-            border-collapse: collapse;
-            background: #fff;
-            margin: 0 auto 12px auto;
-            border-radius: 10px;
-            overflow: hidden;
-            font-size: 17px;
-        }
-        th, td {
-            padding: 12px 9px;
-            border-bottom: 1px solid #eee;
-            text-align: center;
-        }
-        th {
-            background: linear-gradient(90deg, #36c574, #3ed8df);
-            color: #fff;
-            font-weight: 700;
-            font-size: 18px;
-        }
-        tr:last-child td {
-            border-bottom: none;
-        }
-        .img-prod {
-            max-width: 64px;
-            max-height: 64px;
-            outline: 1px solid #e1e1e1;
-            border-radius: 9px;
-            background: #f9f9f9;
-        }
-        footer {
-            margin-top: 30px;
-            padding: 16px 0;
-            background: #222;
-            color: #fff;
-            text-align: center;
-            border-radius: 0 0 10px 10px;
-            font-size: 15px;
-        }
-        .logout-btn {
-            position: absolute;
-            right: 42px;
-            top: 38px;
-            padding: 7px 20px;
-            border: none;
-            background: #222;
-            color: #fff;
-            border-radius: 5px;
-            font-size: 15px;
-            cursor: pointer;
-        }
-        @media (max-width: 810px){
-            .main-container { padding: 5vw 2vw; max-width: 98vw;}
-            table {font-size: 15px;}
-            .logout-btn{ position:static; margin: 0 auto 12px 0;}
-        }
+        table { width: 100%; border-collapse: collapse; background: #fff; margin: 0 auto 10px auto; font-size: 17px;}
+        th,td { padding: 10px 9px; text-align: center; border-bottom:1px solid #eee;}
+        th { background: linear-gradient(90deg, #36c574, #3ed8df); color:#fff; }
+        tr:last-child td { border-bottom: none; }
+        .img-prod { max-width: 64px; max-height: 64px; outline:1px solid #eee; border-radius:7px;}
+        .btn-carrinho { background:#fb0; border:none; color:#333; padding:7px 16px; border-radius:7px; font-size:15px; cursor:pointer; margin: 0 2px; }
+        .btn-carrinho.remove { background:#d33; color:#fff; }
+        .badge { background:#36c574; color:#fff; border-radius:50%; font-size:14px; padding:3px 9px; margin-left:6px;}
+        .carrinho-btn-top { float:right; font-size:17px; margin-top:-9px;}
+        .carrinho-modal { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(40,60,64,0.60); z-index:90; align-items:center; justify-content:center;}
+        .carrinho-content { background:#fff; border-radius:13px; padding:28px 30px; min-width:310px; max-width:97vw; }
+        .carrinho-title { font-size: 20px; margin-bottom:18px; }
+        .carrinho-table th, .carrinho-table td { padding:5px 10px; }
+        .logout-btn { float:right; padding:7px 19px; background:#333; color:#fff; border:none; border-radius:7px; cursor:pointer; }
+        footer { text-align:center; margin-top:30px; padding:13px; background:#333; color:#fff; border-radius: 0 0 10px 10px;}
+        @media (max-width:900px){ .main-container, .login-container { padding:2vw 1vw; max-width:99vw;}table{font-size:14px;} }
     </style>
 </head>
 <body>
-    <!-- LOGIN -->
     <div class="login-container" id="login-container">
         <h2>Login do Supermercado</h2>
         <div class="error" id="login-error"></div>
@@ -145,15 +52,12 @@
         <input type="password" id="login-senha" placeholder="Sua senha">
         <button onclick="realizarLogin()">Entrar</button>
     </div>
-
-    <!-- MAIN -->
     <div class="main-container" id="main-container">
         <button class="logout-btn" onclick="logout()">Sair</button>
-        <h1>Comparativo de Preços - Meu Supermercado</h1>
+        <button class="carrinho-btn-top" onclick="abrirCarrinho()">Carrinho <span class="badge" id="badge-carrinho">0</span></button>
+        <h1>Comparativo do Supermercado</h1>
         <div class="filters">
-            <select id="filtro-categoria" onchange="filtrarProdutos()">
-                <option value="">Todas as categorias</option>
-            </select>
+            <select id="filtro-categoria" onchange="filtrarProdutos()"><option value="">Todas as categorias</option></select>
             <input type="text" id="pesquisa-nome" oninput="filtrarProdutos()" placeholder="Buscar produto...">
         </div>
         <div style="overflow-x:auto">
@@ -166,41 +70,51 @@
                         <th>BH</th>
                         <th>Duvale</th>
                         <th>CD</th>
+                        <th>Carrinho</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Produtos aparecem aqui -->
+                    <!-- Produtos aqui -->
                 </tbody>
             </table>
         </div>
         <footer>
-            Site desenvolvido por Gabryel • Atualizado em 2025 • Contato: gabryel@email.com
+            Supermercado Gabryel &copy; 2025
         </footer>
     </div>
-
+    <!-- Modal Carrinho -->
+    <div class="carrinho-modal" id="carrinho-modal" onclick="fecharCarrinho(event)">
+        <div class="carrinho-content" onclick="event.stopPropagation()">
+            <div class="carrinho-title">Seu Carrinho</div>
+            <table class="carrinho-table" id="tabela-carrinho">
+                <!-- Linhas via JS -->
+            </table>
+            <div style="text-align: right; margin-top: 9px;">
+                <button class="btn-carrinho remove" onclick="esvaziarCarrinho()">Esvaziar Carrinho</button>
+                <button class="btn-carrinho" onclick="fecharCarrinho()">Fechar</button>
+            </div>
+        </div>
+    </div>
     <script>
-        // Troque para seu email/senha! (Simples, apenas front)
-        const USUARIO_EMAIL = "meu@email.com";
-        const USUARIO_SENHA = "123456";
-
+        // Troque aqui para o seu email e senha
+        const USUARIO_EMAIL = "gabryel@email.com";
+        const USUARIO_SENHA = "2025";
         function realizarLogin() {
             const email = document.getElementById('login-email').value.trim();
             const senha = document.getElementById('login-senha').value;
             const errorDiv = document.getElementById('login-error');
-
             if(email === USUARIO_EMAIL && senha === USUARIO_SENHA){
                 errorDiv.style.display = 'none';
                 document.getElementById('login-container').style.display = 'none';
                 document.getElementById('main-container').style.display = 'block';
+                carregarTabelaQuandoLogar();
             } else {
                 errorDiv.textContent = "Email ou senha inválidos!";
             }
         }
-        // ENTER no campo senha
         document.getElementById('login-senha').addEventListener('keyup', function(event){
             if(event.key === "Enter") realizarLogin();
         });
-        // Botão logout
         function logout(){
             document.getElementById('main-container').style.display = 'none';
             document.getElementById('login-container').style.display = 'block';
@@ -208,56 +122,54 @@
             document.getElementById('login-email').value = '';
             document.getElementById('login-senha').value = '';
         }
-
-        // Aqui começa a lógica do supermercado!
-        // MODELO DOS SEUS PRODUTOS. Em produção, você pode ler isso de um Google Sheets ou API!
+        // LISTA PRODUTOS - Use nomes IGUAIS aos arquivos .jpg!
         const produtos = [
-            { nome: "arroz camil", categoria: "alimentos", imagem: "arroz.jpg", BH:22.89, Duvale:21.59, CD:23.29 },
-            { nome: "banana", categoria: "frutas", imagem: "banana.jpg", BH:4.39, Duvale:3.98, CD:4.49 },
-            { nome: "bis", categoria: "doces", imagem: "bis.jpg", BH:3.99, Duvale:3.79, CD:3.85 },
-            { nome: "bombom garoto", categoria: "doces", imagem: "bombom.jpg", BH:14.99, Duvale:15.49, CD:15.39 },
-            { nome: "bombril", categoria: "limpeza", imagem: "bombril.jpg", BH:2.49, Duvale:2.39, CD:2.29 },
-            { nome: "cenoura", categoria: "legumes", imagem: "cenoura.jpg", BH:3.29, Duvale:3.09, CD:3.49 },
-            { nome: "coca cola", categoria: "bebidas", imagem: "coca.jpg", BH:7.99, Duvale:8.39, CD:7.89 },
-            { nome: "creme dental colgate", categoria: "higiene", imagem: "colgate.jpg", BH:5.49, Duvale:5.29, CD:5.19 },
-            { nome: "creme dental sorriso", categoria: "higiene", imagem: "sorriso.jpg", BH:3.99, Duvale:4.09, CD:3.89 },
-            { nome: "detergente limpol", categoria: "limpeza", imagem: "limpol.jpg", BH:2.69, Duvale:2.59, CD:2.79 },
-            { nome: "detergente ype", categoria: "limpeza", imagem: "ype.jpg", BH:2.79, Duvale:2.69, CD:2.89 },
-            { nome: "feijao camil", categoria: "alimentos", imagem: "feijao.jpg", BH:8.99, Duvale:8.69, CD:7.99 },
-            { nome: "guarana antarctica", categoria: "bebidas", imagem: "guarana.jpg", BH:6.89, Duvale:6.99, CD:6.59 },
-            { nome: "maçã", categoria: "frutas", imagem: "maca.jpg", BH:5.29, Duvale:5.19, CD:5.39 },
-            { nome: "macarrao renata", categoria: "alimentos", imagem: "macarrao.jpg", BH:3.39, Duvale:3.49, CD:3.59 },
-            { nome: "sabonete nivea", categoria: "higiene", imagem: "nivea.jpg", BH:2.59, Duvale:2.79, CD:3.09 },
-            { nome: "suco de laranja", categoria: "bebidas", imagem: "suco.jpg", BH:4.49, Duvale:4.59, CD:4.39 },
-            { nome: "sucrilhos", categoria: "cereais", imagem: "sucrilhos.jpg", BH:9.79, Duvale:9.89, CD:9.69 },
-            { nome: "tomate", categoria: "legumes", imagem: "tomate.jpg", BH:5.79, Duvale:5.29, CD:5.49 },
-            { nome: "trakinas", categoria: "doces", imagem: "trakinas.jpg", BH:2.69, Duvale:2.79, CD:2.49 },
-            { nome: "veja", categoria: "limpeza", imagem: "veja.jpg", BH:5.59, Duvale:5.39, CD:5.79 },
-            { nome: "leite integral", categoria: "bebidas", imagem: "leite.jpg", BH:4.99, Duvale:5.19, CD:4.79 },
-            { nome: "açúcar refinado", categoria: "alimentos", imagem: "acucar.jpg", BH:3.39, Duvale:3.29, CD:3.45 },
-            { nome: "café pilão", categoria: "bebidas", imagem: "cafe.jpg", BH:8.49, Duvale:8.19, CD:8.79 },
-            { nome: "óleo de soja", categoria: "alimentos", imagem: "oleo.jpg", BH:5.99, Duvale:6.19, CD:5.89 },
-            { nome: "farinha de trigo", categoria: "alimentos", imagem: "farinha.jpg", BH:4.29, Duvale:4.49, CD:4.19 },
-            { nome: "pão francês", categoria: "padaria", imagem: "pao.jpg", BH:9.99, Duvale:9.49, CD:9.79 },
-            { nome: "iogurte natural", categoria: "laticínios", imagem: "iogurte.jpg", BH:2.89, Duvale:3.19, CD:2.79 },
-            { nome: "presunto fatiado", categoria: "frios", imagem: "presunto.jpg", BH:6.49, Duvale:6.19, CD:6.69 },
-            { nome: "queijo mussarela fatiado", categoria: "frios", imagem: "mussarela.jpg", BH:9.49, Duvale:9.19, CD:9.79 },
-            { nome: "alface", categoria: "hortifruti", imagem: "alface.jpg", BH:2.99, Duvale:2.89, CD:3.09 },
-            { nome: "cebola", categoria: "legumes", imagem: "cebola.jpg", BH:3.89, Duvale:3.69, CD:3.99 },
-            { nome: "batata inglesa", categoria: "legumes", imagem: "batata.jpg", BH:4.79, Duvale:4.69, CD:4.59 },
-            { nome: "carne bovina 1kg", categoria: "açougue", imagem: "carne.jpg", BH:29.99, Duvale:31.99, CD:32.49 },
-            { nome: "frango resfriado 1kg", categoria: "açougue", imagem: "frango.jpg", BH:14.99, Duvale:15.49, CD:17.89 },
-            { nome: "salsicha", categoria: "frios", imagem: "salsicha.jpg", BH:8.99, Duvale:9.29, CD:8.49 },
-            { nome: "água mineral 1,5L", categoria: "bebidas", imagem: "agua.jpg", BH:2.19, Duvale:2.09, CD:2.39 },
-            { nome: "refrigerante fanta laranja", categoria: "bebidas", imagem: "fanta.jpg", BH:6.69, Duvale:6.89, CD:6.59 },
-            { nome: "bolacha cream cracker", categoria: "alimentos", imagem: "bolacha.jpg", BH:4.39, Duvale:4.24, CD:4.29 },
-            { nome: "sabão em pó omo 800g", categoria: "limpeza", imagem: "omo.jpg", BH:12.99, Duvale:12.59, CD:13.49 },
-            { nome: "papel higiênico neve", categoria: "higiene", imagem: "neve.jpg", BH:16.99, Duvale:15.99, CD:16.29 }
+            { nome:"Arroz camil", categoria:"alimentos", imagem:"Arroz_camil.jpg", BH:22.89, Duvale:21.59, CD:23.29 },
+            { nome:"Feijão camil", categoria:"alimentos", imagem:"Feijao_camil.jpg", BH:8.99, Duvale:8.69, CD:7.99 },
+            { nome:"Açúcar", categoria:"alimentos", imagem:"acucar.jpg", BH:3.39, Duvale:3.29, CD:3.45 },
+            { nome:"Água", categoria:"bebidas", imagem:"agua.jpg", BH:2.19, Duvale:2.09, CD:2.39 },
+            { nome:"Alface", categoria:"hortifruti", imagem:"alface.jpg", BH:2.99, Duvale:2.89, CD:3.09 },
+            { nome:"Banana", categoria:"frutas", imagem:"banana.jpg", BH:4.39, Duvale:3.98, CD:4.49 },
+            { nome:"Batata", categoria:"legumes", imagem:"batata.jpg", BH:4.79, Duvale:4.69, CD:4.59 },
+            { nome:"Bis", categoria:"doces", imagem:"bis.jpg", BH:3.99, Duvale:3.79, CD:3.85 },
+            { nome:"Bolacha", categoria:"alimentos", imagem:"bolacha.jpg", BH:4.39, Duvale:4.24, CD:4.29 },
+            { nome:"Bombom Garoto", categoria:"doces", imagem:"bombom_garoto.jpg", BH:14.99, Duvale:15.49, CD:15.39 },
+            { nome:"Bombril", categoria:"limpeza", imagem:"bombril.jpg", BH:2.49, Duvale:2.39, CD:2.29 },
+            { nome:"Café", categoria:"bebidas", imagem:"cafe.jpg", BH:8.49, Duvale:8.19, CD:8.79 },
+            { nome:"Carne", categoria:"açougue", imagem:"carne.jpg", BH:29.99, Duvale:31.99, CD:32.49 },
+            { nome:"Cebola", categoria:"legumes", imagem:"cebola.jpg", BH:3.89, Duvale:3.69, CD:3.99 },
+            { nome:"Cenoura", categoria:"legumes", imagem:"cenoura.jpg", BH:3.29, Duvale:3.09, CD:3.49 },
+            { nome:"Coca Cola", categoria:"bebidas", imagem:"coca cola.jpg", BH:7.99, Duvale:8.39, CD:7.89 },
+            { nome:"Creme Dental Colgate", categoria:"higiene", imagem:"cremedentalcolgate.jpg", BH:5.49, Duvale:5.29, CD:5.19 },
+            { nome:"Creme Dental Sorriso", categoria:"higiene", imagem:"cremedentalsorriso.jpg", BH:3.99, Duvale:4.09, CD:3.89 },
+            { nome:"Detergente Limpol", categoria:"limpeza", imagem:"detergente_limpo.jpg", BH:2.69, Duvale:2.59, CD:2.79 },
+            { nome:"Detergente Ype", categoria:"limpeza", imagem:"detergente_ype.jpg", BH:2.79, Duvale:2.69, CD:2.89 },
+            { nome:"Fanta", categoria:"bebidas", imagem:"fanta.jpg", BH:6.69, Duvale:6.89, CD:6.59 },
+            { nome:"Farinha", categoria:"alimentos", imagem:"farinha.jpg", BH:4.29, Duvale:4.49, CD:4.19 },
+            { nome:"Frango", categoria:"açougue", imagem:"frango.jpg", BH:14.99, Duvale:15.49, CD:17.89 },
+            { nome:"Guaraná Antarctica", categoria:"bebidas", imagem:"guarana_antarctica.jpg", BH:6.89, Duvale:6.99, CD:6.59 },
+            { nome:"Iogurte", categoria:"laticínios", imagem:"iogurte.jpg", BH:2.89, Duvale:3.19, CD:2.79 },
+            { nome:"Leite", categoria:"laticínios", imagem:"leite.jpg", BH:4.99, Duvale:5.19, CD:4.79 },
+            { nome:"Maçã", categoria:"frutas", imagem:"maçã.jpg", BH:5.29, Duvale:5.19, CD:5.39 },
+            { nome:"Macarrão Renata", categoria:"alimentos", imagem:"macarrao_renata.jpg", BH:3.39, Duvale:3.49, CD:3.59 },
+            { nome:"Mussarela", categoria:"frios", imagem:"mussarela.jpg", BH:9.49, Duvale:9.19, CD:9.79 },
+            { nome:"Neve", categoria:"higiene", imagem:"neve.jpg", BH:16.99, Duvale:15.99, CD:16.29 },
+            { nome:"Óleo", categoria:"alimentos", imagem:"oleo.jpg", BH:5.99, Duvale:6.19, CD:5.89 },
+            { nome:"Omo", categoria:"limpeza", imagem:"omo.jpg", BH:12.99, Duvale:12.59, CD:13.49 },
+            { nome:"Pão", categoria:"padaria", imagem:"pao.jpg", BH:9.99, Duvale:9.49, CD:9.79 },
+            { nome:"Presunto", categoria:"frios", imagem:"presunto.jpg", BH:6.49, Duvale:6.19, CD:6.69 },
+            { nome:"Sabonete Nivea", categoria:"higiene", imagem:"sabonete_nivea.jpg", BH:2.59, Duvale:2.79, CD:3.09 },
+            { nome:"Salsicha", categoria:"frios", imagem:"salsicha.jpg", BH:8.99, Duvale:9.29, CD:8.49 },
+            { nome:"Suco de Laranja", categoria:"bebidas", imagem:"suco de laranja.jpg", BH:4.49, Duvale:4.59, CD:4.39 },
+            { nome:"Sucrilhos", categoria:"cereais", imagem:"sucrilhos.jpg", BH:9.79, Duvale:9.89, CD:9.69 },
+            { nome:"Tomate", categoria:"legumes", imagem:"tomate.jpg", BH:5.79, Duvale:5.29, CD:5.49 },
+            { nome:"Trakinas", categoria:"doces", imagem:"trakinas.jpg", BH:2.69, Duvale:2.79, CD:2.49 },
+            { nome:"Veja", categoria:"limpeza", imagem:"veja.jpg", BH:5.59, Duvale:5.39, CD:5.79 }
         ];
-
-        // Preenche categorias no select
+        // Categoria auto fill
         function popularCategorias(){
             const select = document.getElementById('filtro-categoria');
+            select.innerHTML = '<option value="">Todas as categorias</option>';
             const cats = [...new Set(produtos.map(p=>p.categoria))].sort();
             cats.forEach(cat=>{
                 let opt = document.createElement('option');
@@ -266,23 +178,46 @@
                 select.appendChild(opt);
             });
         }
-        popularCategorias();
-
-        // Mostra produtos
+        // Carrinho
+        let carrinho = [];
+        function carregarCarrinhoDeLocal(){
+            const ar = localStorage.getItem('carrinho');
+            carrinho = ar ? JSON.parse(ar) : [];
+        }
+        function salvarCarrinho(){
+            localStorage.setItem('carrinho', JSON.stringify(carrinho));
+            atualizarBadgeCarrinho();
+        }
+        function atualizarBadgeCarrinho(){
+            document.getElementById('badge-carrinho').textContent = carrinho.length;
+        }
+        function adicionarAoCarrinho(idx){
+            if(!carrinho.includes(idx)){
+                carrinho.push(idx);
+                salvarCarrinho();
+                filtrarProdutos();
+            }
+        }
+        function removerDoCarrinho(idx){
+            carrinho = carrinho.filter(id => id !== idx);
+            salvarCarrinho();
+            filtrarProdutos();
+        }
         function mostrarProdutos(filtroCat='', pesquisa=''){
             const tbody = document.querySelector('#tabela-produtos tbody');
             tbody.innerHTML = '';
-            let lista = produtos.filter(produto=>
-                (filtroCat===''||produto.categoria===filtroCat) &&
-                (pesquisa===''||produto.nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,"").includes(pesquisa.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,"")))
-            );
+            let lista = produtos.map((p, idx)=>({...p, idx}))
+                .filter(produto=>
+                    (filtroCat===''||produto.categoria===filtroCat) &&
+                    (pesquisa===''||produto.nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,"").includes(pesquisa.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,"")))
+                );
             if(lista.length==0){
-                tbody.innerHTML = "<tr><td colspan='6'>Nenhum produto encontrado.</td></tr>";
+                tbody.innerHTML = "<tr><td colspan='7'>Nenhum produto encontrado.</td></tr>";
                 return;
             }
             for(let prod of lista){
-                // Mostra imagem local no repositório (troque o caminho se sua pasta for diferente)
-                let imgSrc = prod.imagem.startsWith('http') ? prod.imagem : ('./'+prod.imagem);
+                const estaCarrinho = carrinho.includes(prod.idx);
+                let imgSrc = './'+prod.imagem;
                 tbody.innerHTML += `<tr>
                     <td><img class="img-prod" src="${imgSrc}" alt="${prod.nome}"></td>
                     <td>${prod.nome}</td>
@@ -290,6 +225,12 @@
                     <td>R$ ${prod.BH.toFixed(2)}</td>
                     <td>R$ ${prod.Duvale.toFixed(2)}</td>
                     <td>R$ ${prod.CD.toFixed(2)}</td>
+                    <td>
+                        ${estaCarrinho
+                          ? `<button class="btn-carrinho remove" onclick="removerDoCarrinho(${prod.idx})">Remover</button>`
+                          : `<button class="btn-carrinho" onclick="adicionarAoCarrinho(${prod.idx})">Colocar</button>`
+                        } 
+                    </td>
                 </tr>`;
             }
         }
@@ -298,26 +239,45 @@
             const pesq = document.getElementById('pesquisa-nome').value;
             mostrarProdutos(cat, pesq);
         }
-        // Inicializar ao logar
         function carregarTabelaQuandoLogar(){
+            carregarCarrinhoDeLocal();
+            popularCategorias();
             mostrarProdutos();
-            document.getElementById('filtro-categoria').selectedIndex = 0;
-            document.getElementById('pesquisa-nome').value = '';
+            atualizarBadgeCarrinho();
         }
-
-        // Garante popular/filtrar ao entrar
-        document.getElementById('main-container').addEventListener('transitionend', carregarTabelaQuandoLogar);
-        // Alternativa para ativar tabela sempre que o main-container aparecer
-        const obs = new MutationObserver(function(muts){
-            muts.forEach(m=>{
-                if(m.target.style.display !== "none"){
-                    carregarTabelaQuandoLogar();
-                }
+        // Carrinho Modal
+        function abrirCarrinho(){
+            const modal = document.getElementById('carrinho-modal');
+            modal.style.display = 'flex';
+            const tabela = document.getElementById('tabela-carrinho');
+            tabela.innerHTML = '<tr><th>Produto</th><th>Remover</th></tr>';
+            let total = 0;
+            carrinho.forEach(idx=>{
+                let p = produtos[idx];
+                tabela.innerHTML += `<tr>
+                    <td>
+                        <img src='./${p.imagem}' style="width:30px;vertical-align:middle;border-radius:4px;border:1px solid #ddd"> 
+                        ${p.nome}
+                    </td>
+                    <td><button class="btn-carrinho remove" onclick="removerDoCarrinho(${idx});abrirCarrinho()">X</button></td>
+                </tr>`;
+                total += p.BH;  // Ou some da loja que preferir
             });
-        });
-        obs.observe(document.getElementById('main-container'), { attributes:true });
-
-        // Torna seguro: força logout ao recarregar página (simples para uso didático)
+            if (carrinho.length === 0) {
+                tabela.innerHTML += `<tr><td colspan='2'>Carrinho vazio</td></tr>`;
+            }
+        }
+        function fecharCarrinho(evt){
+            if(evt && evt.target && evt.target.id !== "carrinho-modal") return;
+            document.getElementById('carrinho-modal').style.display = 'none';
+            mostrarProdutos();
+        }
+        function esvaziarCarrinho(){
+            carrinho = [];
+            salvarCarrinho();
+            abrirCarrinho();
+        }
+        // Garante sempre fechar ao recarregar
         window.onload = function(){
             document.getElementById('main-container').style.display = 'none';
             document.getElementById('login-container').style.display = 'block';
