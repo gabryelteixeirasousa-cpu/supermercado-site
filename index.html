@@ -1,402 +1,327 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<title>Comparador de Supermercados</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-:root {
- --primary: #1479cb;
- --accent: #27b07a;
- --degrade-top: linear-gradient(90deg, #1479cb 65%, #27b07a 100%);
- --degrade-foot: linear-gradient(90deg, #27b07a 20%, #1479cb 80%);
- --footer-bg: #16222a;
- --card-bg: rgba(255,255,255,0.97);
- --shadow: 0 3px 18px #60aacc2c;
-}
-body {
-    margin:0;
-    font-family:sans-serif;
-    background: #eaf3fa;
-    box-sizing: border-box;
-    min-height:100vh;
-    position:relative;
-    overflow-x:hidden;
-}
-.bg-img-fundo {
-    position:fixed;z-index:-20;top:0;left:0;width:100vw;height:100vh;
-    background:url('https://gabryelteixeirasousa-cpu.github.io/supermercado-site/fundo_comida.jpg') repeat;
-    opacity:0.18;
-    background-size:270px;
-    pointer-events:none;
-}
-/* HEADER */
-header {
-    background: var(--degrade-top);
-    color:#fff;
-    padding:40px 14px 28px 14px;
-    text-align:center;
-    box-shadow: 0 3px 30px #bddaf3a5;
-}
-header h1 {
-    margin:0;
-    font-weight:900;
-    letter-spacing:.8px;
-    font-size: 2.3em;
-    text-shadow:0 2px 16px #0e295a35;
-}
-header .slogan{
-    margin:14px 0 0 0;
-    font-size:1.15em;
-    opacity:.93;
-    text-shadow: 0 2px 16px #0f4b6c35;
-}
-
-/* SEARCH */
-.search-bar{margin:27px auto 15px;text-align:center;}
-#searchInput {
-    width:345px;max-width:97vw;padding:14px 22px;
-    border:2px solid var(--primary);
-    border-radius:24px;
-    font-size:1.16em;
-    background:#f3f7fd;
-}
-.products-section{
-    margin: 0 auto 42px auto;
-    max-width: 1300px;
-    padding:0 12px;
-}
-.products-list{display:flex;flex-wrap:wrap;gap:26px;justify-content:center;}
-.product-card{
-    background:var(--card-bg);
-    border-radius:17px;
-    box-shadow:var(--shadow);
-    padding:15px 13px 21px 13px;
-    display:flex;flex-direction:column;align-items:center;
-    width:219px;
-    min-height:330px;
-    position:relative;
-    transition:.17s;
-    margin-top:7px;
-}
-.product-card:hover{
-    box-shadow:0 7px 28px #5da6eb38;
-    transform:scale(1.025);
-    z-index:2;
-}
-.product-img{max-width:92px;max-height:86px;margin-bottom:12px;background:#fff;border-radius:8px;}
-.product-title{font-weight:700;font-size:1.13em;margin-bottom:8px;margin-top:7px;text-align:center;}
-.product-category{color:#1479cb;font-size:.96em;}
-.price-table{width:97%;margin:13px auto 7px;border-collapse:collapse;}
-.price-table td{padding:4px 7px;font-size:1.03em;}
-.add-cart-btn{
-    margin-top:11px;
-    background:var(--primary);
-    color:#fff;
-    border:none;
-    border-radius:22px;
-    padding:9px 24px;
-    font-weight:700;
-    cursor:pointer;
-    box-shadow:0 2px 10px #ddebf7;
-    font-size:1.04em;
-    transition:background .12s;
-}
-.add-cart-btn:hover{background:var(--accent);}
-.cart-fab{
-    position:fixed;right:28px;bottom:28px;background:var(--primary);color:#fff;width:62px;height:62px;border-radius:58%;display:flex;align-items:center;justify-content:center;font-size:2.3em;box-shadow:0 2px 18px #b0d6fac1;cursor:pointer;z-index:200;border: 4px solid #fff;transition: background .13s;
-}
-.cart-fab:hover{background:var(--accent);}
-.cart-count{position:absolute;top:10px;right:19px;background:#e53636;color:#fff;width:25px;height:25px;display:flex;align-items:center;justify-content:center;border-radius:50%;font-weight:700;}
-/* --- CARRINHO --- */
-.cart-modal-bg{display:none;position:fixed;z-index:210;left:0;top:0;width:100vw;height:100vh;background:rgba(60,95,130,.17);}
-.cart-modal{display:none;position:fixed;right:0;top:0;width:395px;max-width:99vw;z-index:211;height:100vh;background:#fff;box-shadow:-6px 0 34px #b6cef730;padding-bottom:20px;overflow-y:auto;}
-.cart-header{background:var(--degrade-top);color:#fff;padding:21px 19px 13px 27px;font-size:1.11em;display:flex;justify-content:space-between;align-items:center}
-.cart-header button{background:none;border:none;color:#fff;font-size:1.3em;font-weight:700;cursor:pointer;}
-.cart-items{padding:16px;}
-.cart-item{display:flex;align-items:center;margin-bottom:13px;}
-.cart-item img{max-width:49px;max-height:45px;margin-right:9px;border-radius:7px;}
-.cart-item-title{font-weight:600;margin-bottom:3px;}
-.cart-item-price{color:var(--primary);font-size:.99em;}
-.cart-qty-div{display:flex;align-items:center;margin-top:5px;}
-.cart-qty-div button{background:var(--primary);color:#fff;width:22px;height:24px;border-radius:7px;border:none;cursor:pointer;}
-.cart-qty-div input{width:34px;height:23px;text-align:center;border-radius:8px;}
-.cart-remove{background:#e53636;color:#fff;border:none;border-radius:7px;font-size:.97em;padding:4px 7px;cursor:pointer;margin-left:6px;}
-.cart-footer{padding:16px 20px;}
-.cart-finalizar{background:var(--accent);color:#fff;border:none;border-radius:16px;padding:10px 20px;font-size:1.14em;font-weight:700;cursor:pointer;width:100%;margin-top:13px;box-shadow:0 1.5px 11px #cdebbf;}
-/* Comparação */
-.compare-modal-bg{display:none;position:fixed;left:0;top:0;width:100vw;height:100vh;background:rgba(24,46,63,.18);z-index:300;}
-.compare-modal{display:none;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;padding:30px 19px 20px;max-width:490px;width:97vw;border-radius:18px;z-index:310;}
-.compare-title{text-align:center;font-weight:700;font-size:1.21em;color:var(--primary);margin-bottom:16px;}
-.compare-table{width:100%;margin:auto;border-collapse:collapse;}
-.compare-table th,.compare-table td{padding:10px 7px;text-align:center;}
-.compare-table th{background:var(--primary);color:#fff;}
-.compare-best{background:var(--accent);color:#fff;font-weight:bold;}
-.compare-worst{background:#e53636;color:#fff;font-weight:bold;}
-.compare-mid{background:#fbbd35;color:#fff;font-weight:bold;}
-.compare-close{position:absolute;right:19px;top:13px;background:none;border:none;color:#e53636;font-size:1.41em;font-weight:bold;cursor:pointer;}
-#toast{visibility:hidden;min-width:180px;position:fixed;z-index:4000;left:50%;top:22px;margin-left:-110px;background:#176fb5;color:#fff;font-weight:600;text-align:center;border-radius:7px;padding:13px;font-size:1.08em;box-shadow:0 .7px 8px #dcdcf9;}
-#toast.success{background:#27b07a;}
-#toast.error{background:#e53636;}
-#toast.info{background:#176fb5;}
-/** RODAPÉ **/
-footer {
-    background: var(--degrade-foot);
-    color:#fff;
-    padding:42px 14px 23px 14px;
-    margin-top:48px;
-    text-align:center;
-    box-shadow:0 -1px 35px #27b07a40;
-    position:relative;
-}
-footer .footer-container{
-    max-width:990px;
-    margin:auto;
-    display:flex;flex-wrap:wrap;justify-content:space-between;
-    gap:39px;
-    align-items:flex-start;
-}
-.footer-block{min-width:210px;flex:1 1 250px;text-align:left;}
-.footer-block h3{font-weight:900;font-size:1.08em;color:#fff;border-bottom:2px solid #fff2;width:max-content;padding-bottom:6px;}
-.footer-contact a{color:#ffe986;text-decoration:none;font-weight:700;}
-.footer-social a{display:inline-block;margin:0 7px;}
-footer .copy {margin-top:26px;opacity:.79;font-size:.98em;}
-@media (max-width:900px){
-    .footer-container{flex-direction:column;gap:19px;}
-    .footer-block{text-align:center;}
-}
-@media (max-width:610px){
-    #searchInput{width:97vw;}
-    .product-card{width:98vw;}
-    .cart-modal{width:99vw;}
-    .compare-modal{width:99vw}
-}
-</style>
+    <meta charset="UTF-8">
+    <title>Meu Supermercado - Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f3f3;
+            margin: 0;
+            padding: 0;
+        }
+        .login-container, .main-container {
+            max-width: 410px;
+            background: #fff;
+            margin: 48px auto 0;
+            padding: 34px 34px 28px 34px;
+            border-radius: 8px;
+            box-shadow: 0 6px 22px #0001;
+        }
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .login-container label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .login-container input[type="email"],
+        .login-container input[type="password"] {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #bbb;
+            border-radius: 4px;
+            margin-bottom: 18px;
+            font-size: 17px;
+        }
+        .login-container button {
+            width: 100%;
+            padding: 11px;
+            background: #36c574;
+            border: none;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 5px;
+            font-size: 17px;
+            cursor: pointer;
+            margin-bottom: 6px;
+        }
+        .login-container .error {
+            color: #d33;
+            margin-bottom: 14px;
+            text-align: center;
+            font-size: 15px;
+        }
+        /* PRINCIPAL */
+        .main-container {
+            display: none;
+            max-width: 1260px;
+            padding: 32px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+        .filters select, .filters input[type="text"] {
+            padding: 6px 12px;
+            border: 1px solid #bbb;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        table {
+            width: 98%;
+            border-collapse: collapse;
+            background: #fff;
+            margin: 0 auto 12px auto;
+            border-radius: 10px;
+            overflow: hidden;
+            font-size: 17px;
+        }
+        th, td {
+            padding: 12px 9px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+        th {
+            background: linear-gradient(90deg, #36c574, #3ed8df);
+            color: #fff;
+            font-weight: 700;
+            font-size: 18px;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .img-prod {
+            max-width: 64px;
+            max-height: 64px;
+            outline: 1px solid #e1e1e1;
+            border-radius: 9px;
+            background: #f9f9f9;
+        }
+        footer {
+            margin-top: 30px;
+            padding: 16px 0;
+            background: #222;
+            color: #fff;
+            text-align: center;
+            border-radius: 0 0 10px 10px;
+            font-size: 15px;
+        }
+        .logout-btn {
+            position: absolute;
+            right: 42px;
+            top: 38px;
+            padding: 7px 20px;
+            border: none;
+            background: #222;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        @media (max-width: 810px){
+            .main-container { padding: 5vw 2vw; max-width: 98vw;}
+            table {font-size: 15px;}
+            .logout-btn{ position:static; margin: 0 auto 12px 0;}
+        }
+    </style>
 </head>
 <body>
-<div class="bg-img-fundo"></div>
-<header>
-    <h1>Supermercado On-line</h1>
-    <div class="slogan">Monte seu carrinho, compare preços nos principais supermercados e economize de verdade!</div>
-</header>
+    <!-- LOGIN -->
+    <div class="login-container" id="login-container">
+        <h2>Login do Supermercado</h2>
+        <div class="error" id="login-error"></div>
+        <label for="email">Email:</label>
+        <input type="email" id="login-email" placeholder="Seu email">
+        <label for="senha">Senha:</label>
+        <input type="password" id="login-senha" placeholder="Sua senha">
+        <button onclick="realizarLogin()">Entrar</button>
+    </div>
 
-<div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Busque por produto, categoria..." oninput="listarProdutos()">
-</div>
-<div class="products-section">
-    <div class="products-list" id="productsContainer">
-        <div>Carregando produtos...</div>
-    </div>
-</div>
-<!-- Carrinho flutuante -->
-<div class="cart-fab" id="cartFab" onclick="abrirCarrinho()" title="Abrir carrinho">
-    🛒<span class="cart-count" id="cartCount" style="display:none;">0</span>
-</div>
-<!-- Carrinho -->
-<div class="cart-modal-bg" id="cartModalBg" onclick="fecharCarrinho()"></div>
-<aside class="cart-modal" id="cartModal">
-    <div class="cart-header">
-        <span>🛒 Seu Carrinho</span>
-        <button onclick="fecharCarrinho()">&times;</button>
-    </div>
-    <div class="cart-items" id="cartItems"></div>
-    <div class="cart-footer">
-        <button class="cart-finalizar" onclick="compararPrecos()">Comparar preços</button>
-    </div>
-</aside>
-<!-- Comparação -->
-<div class="compare-modal-bg" id="compareModalBg" onclick="fecharComparacao()"></div>
-<div class="compare-modal" id="compareModal">
-    <button class="compare-close" onclick="fecharComparacao()">&times;</button>
-    <div class="compare-title">Comparativo de Preço do Carrinho</div>
-    <div id="compareTableContainer"></div>
-</div>
-<div id="toast"></div>
-<!-- Footer profissional -->
-<footer>
-    <div class="footer-container">
-        <div class="footer-block">
-            <h3>Sobre o Projeto</h3>
-            <p>
-            Este site é uma solução para você comparar preços entre supermercados e maximizar sua economia. Desenvolvido por Gabryel com foco em experiência, agilidade e transparência!
-            </p>
+    <!-- MAIN -->
+    <div class="main-container" id="main-container">
+        <button class="logout-btn" onclick="logout()">Sair</button>
+        <h1>Comparativo de Preços - Meu Supermercado</h1>
+        <div class="filters">
+            <select id="filtro-categoria" onchange="filtrarProdutos()">
+                <option value="">Todas as categorias</option>
+            </select>
+            <input type="text" id="pesquisa-nome" oninput="filtrarProdutos()" placeholder="Buscar produto...">
         </div>
-        <div class="footer-block footer-contact">
-            <h3>Contato</h3>
-            <p>Email: <a href="mailto:gabryel@seuprojeto.com">gabryel@seuprojeto.com</a></p>
-            <p>WhatsApp: <a href="https://wa.me/5531999999999" target="_blank">(31) 99999-9999</a></p>
-        </div>
-        <div class="footer-block footer-social">
-            <h3>Redes Sociais</h3>
-            <a href="#" target="_blank" title="Instagram"><img src="https://cdn-icons-png.flaticon.com/24/733/733558.png"></a>
-            <a href="#" target="_blank" title="Facebook"><img src="https://cdn-icons-png.flaticon.com/24/733/733547.png"></a>
-            <a href="#" target="_blank" title="LinkedIn"><img src="https://cdn-icons-png.flaticon.com/24/2504/2504923.png"></a>
-        </div>
-    </div>
-    <div class="copy">
-        &copy; 2024 Supermercado On-line | Projeto de comparação de preços. Desenvolvido por Gabryel.
-    </div>
-</footer>
-<script>
-const LINK_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS-dB_7ATOb6_pfxzOey8AzH5zS92qIGtloBdDHkbbPk-8Nltgb15PeR_s0VBpVj58pspSAfIW_Bb97/pub?output=csv";
-const BASE_IMG = 'https://gabryelteixeirasousa-cpu.github.io/supermercado-site/';
-const SUPS = [
-    { market:"BH", cor:'#1479cb' },
-    { market:"Duvale", cor:'#fbbd35' },
-    { market:"CD", cor:'#27b07a' }
-];
-let PRODUTOS = [];
-let carrinho = [];
-
-async function carregarProdutos(){
-    const resp = await fetch(LINK_CSV);
-    const txt = await resp.text();
-    const linhas = txt.trim().split('\n');
-    const chaves = linhas[0].split(',').map(t=>t.trim().replace(/"/g,''));
-    PRODUTOS = linhas.slice(1).map(linha=>{
-        const regex = /(".*?"|[^",\s]+)(?=\s*,|\s*$)/g;
-        let col = [];
-        let result;
-        while ((result = regex.exec(linha)) !== null) {
-            col.push(result[1].replace(/^"|"$/g,''));
-        }
-        let prod={};
-        chaves.forEach((k,i)=>prod[k]=col[i]);
-        return prod;
-    });
-    listarProdutos();
-}
-function listarProdutos() {
-    let filtro = document.getElementById("searchInput").value.toLowerCase().trim();
-    let html = '';
-    let prodFiltrados = PRODUTOS.filter(p=>{
-        return (
-            (p.nome||'').toLowerCase().includes(filtro) ||
-            (p.categoria||'').toLowerCase().includes(filtro)
-        );
-    });
-    prodFiltrados.forEach(prod => {
-        let imgUrl = prod.imagem.startsWith('http') ? prod.imagem : (BASE_IMG + prod.imagem);
-        html += `
-        <div class="product-card">
-            <img src="${imgUrl}" alt="${prod.nome}" class="product-img">
-            <div class="product-title">${prod.nome}</div>
-            <div class="product-category">${prod.categoria||''}</div>
-            <table class="price-table">
-                <tr><td style="color:${SUPS[0].cor};">BH</td><td>R$ ${Number(prod.BH).toFixed(2)}</td></tr>
-                <tr><td style="color:${SUPS[1].cor};">Duvale</td><td>R$ ${Number(prod.Duvale).toFixed(2)}</td></tr>
-                <tr><td style="color:${SUPS[2].cor};">CD</td><td>R$ ${Number(prod.CD).toFixed(2)}</td></tr>
+        <div style="overflow-x:auto">
+            <table id="tabela-produtos">
+                <thead>
+                    <tr>
+                        <th>Imagem</th>
+                        <th>Nome</th>
+                        <th>Categoria</th>
+                        <th>BH</th>
+                        <th>Duvale</th>
+                        <th>CD</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Produtos aparecem aqui -->
+                </tbody>
             </table>
-            <div style="margin-top:8px;">
-                <button class="add-cart-btn" onclick="addAoCarrinho('${prod.nome}')">Adicionar ao carrinho</button>
-            </div>
         </div>
-        `;
-    });
-    document.getElementById('productsContainer').innerHTML = html || `<div style="margin:30px auto;text-align:center;opacity:.7;">Nenhum produto encontrado...</div>`;
-}
-function addAoCarrinho(prodName){
-    let prod = PRODUTOS.find(p=>p.nome==prodName);
-    if(!prod) return;
-    let idx = carrinho.findIndex(it=>it.nome==prodName);
-    if(idx>-1){ carrinho[idx].qtd++; }
-    else { carrinho.push({ nome:prodName, qtd:1 }); }
-    saveCarrinho();
-    showToast("Adicionado ao carrinho!","success");
-    atualizaFab();
-}
-function abrirCarrinho(){
-    listarCarrinho();
-    document.getElementById("cartModalBg").style.display='block';
-    document.getElementById("cartModal").style.display='block';
-}
-function fecharCarrinho(){
-    document.getElementById("cartModalBg").style.display='none';
-    document.getElementById("cartModal").style.display='none';
-}
-function listarCarrinho(){
-    let html = '';
-    carrinho.forEach(item => {
-        let prod = PRODUTOS.find(p=>p.nome==item.nome);
-        if(!prod) return;
-        let imgUrl = prod.imagem.startsWith('http') ? prod.imagem : (BASE_IMG + prod.imagem);
-        html += `<div class="cart-item">
-            <img src="${imgUrl}" alt="${item.nome}">
-            <div>
-                <div class="cart-item-title">${item.nome}</div>
-                <div class="cart-item-price">
-                    <span>Qtd: <button onclick="cartMudaQtd('${item.nome}',-1)">-</button>
-                    <input type="number" min="1" value="${item.qtd}" style="width:29px;" onchange="cartDefQtd('${item.nome}',this.value)">
-                    <button onclick="cartMudaQtd('${item.nome}',1)">+</button></span>
-                    <button class="cart-remove" onclick="removerDoCarrinho('${item.nome}')">&times;</button>
-                </div>
-            </div>
-        </div>`;
-    });
-    document.getElementById('cartItems').innerHTML = html || `<div style="text-align:center;opacity:.74;">Seu carrinho está vazio.</div>`;
-}
-function cartMudaQtd(nome,delta){
-    let idx=carrinho.findIndex(i=>i.nome==nome);
-    if(idx>-1){ carrinho[idx].qtd+=delta;if(carrinho[idx].qtd<1) carrinho[idx].qtd=1;}
-    saveCarrinho();listarCarrinho();atualizaFab();
-}
-function cartDefQtd(nome,val){
-    let idx=carrinho.findIndex(i=>i.nome==nome);
-    if(idx>-1 && val>=1){ carrinho[idx].qtd=Number(val);}
-    saveCarrinho();listarCarrinho();atualizaFab();
-}
-function removerDoCarrinho(nome){
-    carrinho=carrinho.filter(i=>i.nome!=nome);
-    saveCarrinho();listarCarrinho();atualizaFab();
-}
-function compararPrecos(){
-    if(!carrinho.length){showToast("Carrinho vazio!","error");return;}
-    let totais = SUPS.map(s=>{
-        let tot = 0;
-        for(const c of carrinho){
-            let prod = PRODUTOS.find(p=>p.nome==c.nome);
-            if(prod && prod[s.market]) tot += Number(prod[s.market])*c.qtd;
+        <footer>
+            Site desenvolvido por Gabryel • Atualizado em 2025 • Contato: gabryel@email.com
+        </footer>
+    </div>
+
+    <script>
+        // Troque para seu email/senha! (Simples, apenas front)
+        const USUARIO_EMAIL = "meu@email.com";
+        const USUARIO_SENHA = "123456";
+
+        function realizarLogin() {
+            const email = document.getElementById('login-email').value.trim();
+            const senha = document.getElementById('login-senha').value;
+            const errorDiv = document.getElementById('login-error');
+
+            if(email === USUARIO_EMAIL && senha === USUARIO_SENHA){
+                errorDiv.style.display = 'none';
+                document.getElementById('login-container').style.display = 'none';
+                document.getElementById('main-container').style.display = 'block';
+            } else {
+                errorDiv.textContent = "Email ou senha inválidos!";
+            }
         }
-        return {market:s.market, valor:tot, cor:s.cor};
-    });
-    let min = Math.min(...totais.map(t=>t.valor));
-    let max = Math.max(...totais.map(t=>t.valor));
-    let html = `<table class="compare-table"><tr>
-        <th>Supermercado</th><th>Total</th><th>Dica</th>
-    </tr>`;
-    for(const t of totais){
-        let classe = (t.valor==min)?"compare-best" : (t.valor==max)?"compare-worst":"compare-mid";
-        let dica = (t.valor==min)?"Mais vantajoso!" : (t.valor==max)?"Mais caro":"Intermediário";
-        html += `<tr class="${classe}">
-            <td style="font-weight:bold;color:${t.cor}">${t.market}</td>
-            <td>R$ ${t.valor.toFixed(2)}</td>
-            <td>${dica}</td>
-        </tr>`;
-    }
-    html+=`</table>`;
-    document.getElementById('compareTableContainer').innerHTML=html;
-    document.getElementById('compareModalBg').style.display='block';
-    document.getElementById('compareModal').style.display='block';
-}
-function fecharComparacao(){
-    document.getElementById('compareModalBg').style.display='none';
-    document.getElementById('compareModal').style.display='none';
-}
-function atualizaFab(){
-    let count = carrinho.reduce((a,b)=>a+b.qtd,0);
-    let el = document.getElementById("cartCount");
-    el.style.display = count>0?'flex':'none';
-    el.textContent = count;
-}
-function saveCarrinho(){localStorage.setItem('cartGS',JSON.stringify(carrinho));}
-function loadCarrinho(){carrinho=JSON.parse(localStorage.getItem('cartGS')||'[]');atualizaFab();}
-function showToast(msg, tipo){
-    let el = document.getElementById("toast");
-    el.textContent = msg; el.className=tipo||'info';
-    el.style.visibility='visible';
-    setTimeout(()=>{el.style.visibility='hidden';}, 1800);
-}
-window.onload=()=>{loadCarrinho();carregarProdutos();}
-</script>
+        // ENTER no campo senha
+        document.getElementById('login-senha').addEventListener('keyup', function(event){
+            if(event.key === "Enter") realizarLogin();
+        });
+        // Botão logout
+        function logout(){
+            document.getElementById('main-container').style.display = 'none';
+            document.getElementById('login-container').style.display = 'block';
+            document.getElementById('login-error').textContent = '';
+            document.getElementById('login-email').value = '';
+            document.getElementById('login-senha').value = '';
+        }
+
+        // Aqui começa a lógica do supermercado!
+        // MODELO DOS SEUS PRODUTOS. Em produção, você pode ler isso de um Google Sheets ou API!
+        const produtos = [
+            { nome: "arroz camil", categoria: "alimentos", imagem: "arroz.jpg", BH:22.89, Duvale:21.59, CD:23.29 },
+            { nome: "banana", categoria: "frutas", imagem: "banana.jpg", BH:4.39, Duvale:3.98, CD:4.49 },
+            { nome: "bis", categoria: "doces", imagem: "bis.jpg", BH:3.99, Duvale:3.79, CD:3.85 },
+            { nome: "bombom garoto", categoria: "doces", imagem: "bombom.jpg", BH:14.99, Duvale:15.49, CD:15.39 },
+            { nome: "bombril", categoria: "limpeza", imagem: "bombril.jpg", BH:2.49, Duvale:2.39, CD:2.29 },
+            { nome: "cenoura", categoria: "legumes", imagem: "cenoura.jpg", BH:3.29, Duvale:3.09, CD:3.49 },
+            { nome: "coca cola", categoria: "bebidas", imagem: "coca.jpg", BH:7.99, Duvale:8.39, CD:7.89 },
+            { nome: "creme dental colgate", categoria: "higiene", imagem: "colgate.jpg", BH:5.49, Duvale:5.29, CD:5.19 },
+            { nome: "creme dental sorriso", categoria: "higiene", imagem: "sorriso.jpg", BH:3.99, Duvale:4.09, CD:3.89 },
+            { nome: "detergente limpol", categoria: "limpeza", imagem: "limpol.jpg", BH:2.69, Duvale:2.59, CD:2.79 },
+            { nome: "detergente ype", categoria: "limpeza", imagem: "ype.jpg", BH:2.79, Duvale:2.69, CD:2.89 },
+            { nome: "feijao camil", categoria: "alimentos", imagem: "feijao.jpg", BH:8.99, Duvale:8.69, CD:7.99 },
+            { nome: "guarana antarctica", categoria: "bebidas", imagem: "guarana.jpg", BH:6.89, Duvale:6.99, CD:6.59 },
+            { nome: "maçã", categoria: "frutas", imagem: "maca.jpg", BH:5.29, Duvale:5.19, CD:5.39 },
+            { nome: "macarrao renata", categoria: "alimentos", imagem: "macarrao.jpg", BH:3.39, Duvale:3.49, CD:3.59 },
+            { nome: "sabonete nivea", categoria: "higiene", imagem: "nivea.jpg", BH:2.59, Duvale:2.79, CD:3.09 },
+            { nome: "suco de laranja", categoria: "bebidas", imagem: "suco.jpg", BH:4.49, Duvale:4.59, CD:4.39 },
+            { nome: "sucrilhos", categoria: "cereais", imagem: "sucrilhos.jpg", BH:9.79, Duvale:9.89, CD:9.69 },
+            { nome: "tomate", categoria: "legumes", imagem: "tomate.jpg", BH:5.79, Duvale:5.29, CD:5.49 },
+            { nome: "trakinas", categoria: "doces", imagem: "trakinas.jpg", BH:2.69, Duvale:2.79, CD:2.49 },
+            { nome: "veja", categoria: "limpeza", imagem: "veja.jpg", BH:5.59, Duvale:5.39, CD:5.79 },
+            { nome: "leite integral", categoria: "bebidas", imagem: "leite.jpg", BH:4.99, Duvale:5.19, CD:4.79 },
+            { nome: "açúcar refinado", categoria: "alimentos", imagem: "acucar.jpg", BH:3.39, Duvale:3.29, CD:3.45 },
+            { nome: "café pilão", categoria: "bebidas", imagem: "cafe.jpg", BH:8.49, Duvale:8.19, CD:8.79 },
+            { nome: "óleo de soja", categoria: "alimentos", imagem: "oleo.jpg", BH:5.99, Duvale:6.19, CD:5.89 },
+            { nome: "farinha de trigo", categoria: "alimentos", imagem: "farinha.jpg", BH:4.29, Duvale:4.49, CD:4.19 },
+            { nome: "pão francês", categoria: "padaria", imagem: "pao.jpg", BH:9.99, Duvale:9.49, CD:9.79 },
+            { nome: "iogurte natural", categoria: "laticínios", imagem: "iogurte.jpg", BH:2.89, Duvale:3.19, CD:2.79 },
+            { nome: "presunto fatiado", categoria: "frios", imagem: "presunto.jpg", BH:6.49, Duvale:6.19, CD:6.69 },
+            { nome: "queijo mussarela fatiado", categoria: "frios", imagem: "mussarela.jpg", BH:9.49, Duvale:9.19, CD:9.79 },
+            { nome: "alface", categoria: "hortifruti", imagem: "alface.jpg", BH:2.99, Duvale:2.89, CD:3.09 },
+            { nome: "cebola", categoria: "legumes", imagem: "cebola.jpg", BH:3.89, Duvale:3.69, CD:3.99 },
+            { nome: "batata inglesa", categoria: "legumes", imagem: "batata.jpg", BH:4.79, Duvale:4.69, CD:4.59 },
+            { nome: "carne bovina 1kg", categoria: "açougue", imagem: "carne.jpg", BH:29.99, Duvale:31.99, CD:32.49 },
+            { nome: "frango resfriado 1kg", categoria: "açougue", imagem: "frango.jpg", BH:14.99, Duvale:15.49, CD:17.89 },
+            { nome: "salsicha", categoria: "frios", imagem: "salsicha.jpg", BH:8.99, Duvale:9.29, CD:8.49 },
+            { nome: "água mineral 1,5L", categoria: "bebidas", imagem: "agua.jpg", BH:2.19, Duvale:2.09, CD:2.39 },
+            { nome: "refrigerante fanta laranja", categoria: "bebidas", imagem: "fanta.jpg", BH:6.69, Duvale:6.89, CD:6.59 },
+            { nome: "bolacha cream cracker", categoria: "alimentos", imagem: "bolacha.jpg", BH:4.39, Duvale:4.24, CD:4.29 },
+            { nome: "sabão em pó omo 800g", categoria: "limpeza", imagem: "omo.jpg", BH:12.99, Duvale:12.59, CD:13.49 },
+            { nome: "papel higiênico neve", categoria: "higiene", imagem: "neve.jpg", BH:16.99, Duvale:15.99, CD:16.29 }
+        ];
+
+        // Preenche categorias no select
+        function popularCategorias(){
+            const select = document.getElementById('filtro-categoria');
+            const cats = [...new Set(produtos.map(p=>p.categoria))].sort();
+            cats.forEach(cat=>{
+                let opt = document.createElement('option');
+                opt.value = cat;
+                opt.textContent = cat.charAt(0).toUpperCase()+cat.slice(1);
+                select.appendChild(opt);
+            });
+        }
+        popularCategorias();
+
+        // Mostra produtos
+        function mostrarProdutos(filtroCat='', pesquisa=''){
+            const tbody = document.querySelector('#tabela-produtos tbody');
+            tbody.innerHTML = '';
+            let lista = produtos.filter(produto=>
+                (filtroCat===''||produto.categoria===filtroCat) &&
+                (pesquisa===''||produto.nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,"").includes(pesquisa.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,"")))
+            );
+            if(lista.length==0){
+                tbody.innerHTML = "<tr><td colspan='6'>Nenhum produto encontrado.</td></tr>";
+                return;
+            }
+            for(let prod of lista){
+                // Mostra imagem local no repositório (troque o caminho se sua pasta for diferente)
+                let imgSrc = prod.imagem.startsWith('http') ? prod.imagem : ('./'+prod.imagem);
+                tbody.innerHTML += `<tr>
+                    <td><img class="img-prod" src="${imgSrc}" alt="${prod.nome}"></td>
+                    <td>${prod.nome}</td>
+                    <td>${prod.categoria.charAt(0).toUpperCase()+prod.categoria.slice(1)}</td>
+                    <td>R$ ${prod.BH.toFixed(2)}</td>
+                    <td>R$ ${prod.Duvale.toFixed(2)}</td>
+                    <td>R$ ${prod.CD.toFixed(2)}</td>
+                </tr>`;
+            }
+        }
+        function filtrarProdutos(){
+            const cat = document.getElementById('filtro-categoria').value;
+            const pesq = document.getElementById('pesquisa-nome').value;
+            mostrarProdutos(cat, pesq);
+        }
+        // Inicializar ao logar
+        function carregarTabelaQuandoLogar(){
+            mostrarProdutos();
+            document.getElementById('filtro-categoria').selectedIndex = 0;
+            document.getElementById('pesquisa-nome').value = '';
+        }
+
+        // Garante popular/filtrar ao entrar
+        document.getElementById('main-container').addEventListener('transitionend', carregarTabelaQuandoLogar);
+        // Alternativa para ativar tabela sempre que o main-container aparecer
+        const obs = new MutationObserver(function(muts){
+            muts.forEach(m=>{
+                if(m.target.style.display !== "none"){
+                    carregarTabelaQuandoLogar();
+                }
+            });
+        });
+        obs.observe(document.getElementById('main-container'), { attributes:true });
+
+        // Torna seguro: força logout ao recarregar página (simples para uso didático)
+        window.onload = function(){
+            document.getElementById('main-container').style.display = 'none';
+            document.getElementById('login-container').style.display = 'block';
+        }
+    </script>
 </body>
 </html>
